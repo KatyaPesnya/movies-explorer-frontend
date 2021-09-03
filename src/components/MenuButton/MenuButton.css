@@ -1,0 +1,17 @@
+.menu-button{
+  display: block;  
+  width: 42px;
+  height: 38px;
+  border: unset;
+  background-image: url(../../images/button_menu.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: unset;
+  cursor: pointer;
+  
+}
+@media(min-width: 1280px) {
+    .menu-button{
+        display: none;
+    }    
+}
