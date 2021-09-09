@@ -43,7 +43,15 @@
 .movies-card__like_active{
     background: url(../../images/like_on.svg) center no-repeat;
 }
+.movies-card__delete{
+  background: url(../../images/card_button_delete.svg)  center no-repeat;
+  width: 30px;
+  height: 30px;
+  border: none;
+  box-sizing: border-box;
+  transition: background .2s linear .1s;
 
+}
 .movies-card__container{
 display: grid;
 grid-template-columns: 88% 12%;

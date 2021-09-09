@@ -6,6 +6,7 @@ import Login from '../Login/Login'
 import Register from '../Register/Register'
 import NotFound from '../NotFound/NotFound'
 import Movies from '../Movies/Movies'
+import SavedMovies from "../SavedMovies/SavedMovies";
 
 import "./App.css";
 
@@ -19,7 +20,9 @@ function App() {
         <Route exact path="/movies">
           <Movies />
         </Route>
-        <Route exact path="/saved-movies"></Route>
+        <Route exact path="/saved-movies">
+          <SavedMovies />
+        </Route>
         <Route exact path="/profile"></Route>
         <Route exact path="/signin">
           <Login />
