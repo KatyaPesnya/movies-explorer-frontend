@@ -66,6 +66,7 @@ line-height: 16px;
 }
 @media (min-width: 1280px) {
     .footer{
-    padding: 161px 72px 10px 69px;
+    padding: 79px 72px 10px 69px;
+    background-color: #FAFAFA;
     }
 }

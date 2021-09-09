@@ -48,7 +48,7 @@ height: 48px;
 width: 628px;
     }
 }
-@media(min-width: 768px){
+@media(min-width: 1280px){
     .search-form__input{
         width: 1060px;
     }
