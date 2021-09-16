@@ -13,8 +13,6 @@ import Card_10 from '../../images/MoviesCard_10.jpg'
 import Card_11 from '../../images/MoviesCard_11.jpg'
 import Card_12 from '../../images/MoviesCard_12.jpg'
 
-
-
 function MoviesCardList(props) {
     return (
         <ul className="movies-card-list">

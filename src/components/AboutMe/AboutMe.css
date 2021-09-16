@@ -48,6 +48,9 @@
   color: #000;
   padding-right: 26px;
 }
+.aboutMe__link :hover {
+  opacity: .7;
+}
 .aboutMe__description {
   font-size: 11px;
   font-weight: 400;

@@ -3,6 +3,7 @@ import './Register.css'
 import  LogoLink from '../LogoLink/LogoLink'
 import {Link} from 'react-router-dom'
 
+
 function Register() {
   return (
     <main className="register">

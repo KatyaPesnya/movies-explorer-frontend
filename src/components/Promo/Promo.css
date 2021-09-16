@@ -1,15 +1,17 @@
 .promo {
   background-color: #465dff;
   font-family: Inter;
+  color: #fff;
+  padding-bottom: 27px;
+  box-sizing: border-box;
+  max-width: 1280px;
+}
+.promo__container{
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  color: #fff;
-  padding-bottom: 27px;
-  box-sizing: border-box;
 }
-
 @media (min-width: 768px) {
   .promo {
     padding-bottom: 75px;
@@ -17,11 +19,14 @@
 }
 @media (min-width: 1280px) {
   .promo {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
     padding: 0px 70px 72px 70px;
   }
+  .promo__container{
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
 }
+
 .promo__info {
   display: flex;
   flex-direction: column;

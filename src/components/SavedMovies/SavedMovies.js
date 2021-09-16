@@ -5,18 +5,19 @@ import LogoLink from '../../components/LogoLink/LogoLink'
 import MenuButton from '../MenuButton/MenuButton';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer'
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
 function SavedMovies(props) {
     return (
         <main className="movies">
             <div className="movies__container">
         <LogoLink/>
-        <MenuButton/>
-       
-        <div className="movies__buttons">
+        {/* <MenuButton/> */}
+       <MobileNavigation/>
+        {/* <div className="movies__buttons">
             <button className="movies__button">Фильмы</button>
             <button className="movies__button">Сохраненные фильмы</button>
             <button className="movies__button">Аккаунт</button>
-            </div>
+            </div> */}
         </div>
          <SearchForm />
          {/* <Preloader /> */}
