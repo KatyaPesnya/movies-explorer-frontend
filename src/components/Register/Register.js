@@ -11,10 +11,13 @@ function Register() {
         <h1 className="register__title">Добро пожаловать!</h1>
         <form className="register__form">
         <label className="register__info-input">Имя</label>
-            <input className="register__input"></input>
+            <input className="register__input"  required type="text"
+         minLength="2" maxLength="30"></input>
         <label className="register__info-input">E-mail</label>
-            <input className="register__input"></input>
-            <label className="register__info-input">Пароль</label>
+            <input className="register__input"  required type="email"
+         minLength="2" maxLength="30"></input>
+            <label className="register__info-input"  required type="password"
+         minLength="2" maxLength="30">Пароль</label>
             <input className="register__input"></input>
             <button className="register__button" type="submit">Зарегистрироваться</button>
         </form>
