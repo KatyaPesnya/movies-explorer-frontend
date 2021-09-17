@@ -1,7 +1,9 @@
 .navigation__desktop {
+  font-family: "Inter", Arial, sans-serif;
   display: none;
 }
 .navigation__mobile {
+  font-family: "Inter", Arial, sans-serif;
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -48,6 +50,7 @@
   border: none;
 }
 .navigation__item_account {
+  font-family: "Inter", Arial, sans-serif;
   background: #f9f9f9;
   border-radius: 20px;
   text-align: center;

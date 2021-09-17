@@ -3,7 +3,6 @@
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 18px 14px;
   max-width: 1280px;
   width: 100%;
@@ -32,6 +31,8 @@
   background-color: inherit;
   color: #fff;
   flex-basis: 60%;
+  box-sizing: border-box;
+  padding-top: 9px;
 }
 
 @media (min-width: 768px) {
