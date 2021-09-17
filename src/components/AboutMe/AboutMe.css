@@ -49,7 +49,7 @@
   padding-right: 26px;
 }
 .aboutMe__link :hover {
-  opacity: .7;
+  opacity: 0.7;
 }
 .aboutMe__description {
   font-size: 11px;
@@ -185,9 +185,9 @@
   .aboutMe__container {
     grid-template-columns: 70% 30%;
   }
-  .aboutMe__info{
-font-size: 18px;
-line-height: 18px;
+  .aboutMe__info {
+    font-size: 18px;
+    line-height: 18px;
   }
   .aboutMe__pic {
     height: 307px;

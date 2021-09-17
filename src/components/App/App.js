@@ -1,12 +1,12 @@
 import React from "react";
-import {  Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
-import Main from '../Main/Main';
-import Login from '../Login/Login'
-import Register from '../Register/Register'
-import Profile from '../Profile/Profile'
-import NotFound from '../NotFound/NotFound'
-import Movies from '../Movies/Movies'
+import Main from "../Main/Main";
+import Login from "../Login/Login";
+import Register from "../Register/Register";
+import Profile from "../Profile/Profile";
+import NotFound from "../NotFound/NotFound";
+import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 
 import "./App.css";
@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="app">
       <Switch>
-        <Route  exact path="/">
+        <Route exact path="/">
           <Main />
         </Route>
         <Route exact path="/movies">
@@ -35,9 +35,8 @@ function App() {
         </Route>
         <Route path="*">
           <NotFound />
-          </Route>
+        </Route>
       </Switch>
-
     </div>
   );
 }

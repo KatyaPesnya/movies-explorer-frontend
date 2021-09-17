@@ -24,21 +24,19 @@
 }
 
 @media (min-width: 768px) {
-    .movies {
-      padding: 18px 30px;
-    }
-    .movies__button-continuation {
-
-      width: 320px;  
-    }
-  
+  .movies {
+    padding: 18px 30px;
   }
-  @media (min-width: 1280px) {
-    .movies {
-      padding: 18px 68px;
-    }
+  .movies__button-continuation {
+    width: 320px;
+  }
+}
+@media (min-width: 1280px) {
+  .movies {
+    padding: 18px 68px;
+  }
 
-      .movies__button-continuation {
-          margin-bottom: 80px;
-      }
+  .movies__button-continuation {
+    margin-bottom: 80px;
+  }
 }

@@ -1,30 +1,65 @@
 import React from "react";
-import './Register.css'
-import  LogoLink from '../LogoLink/LogoLink'
-import {Link} from 'react-router-dom'
-
+import "./Register.css";
+import LogoLink from "../LogoLink/LogoLink";
+import { Link } from "react-router-dom";
+import useForm from "../../hooks/useForm";
 
 function Register() {
+  const { values, handleChange, resetForm, errors, isValid } = useForm();
+
+  React.useEffect(() => {
+    resetForm();
+  }, [resetForm]);
+
   return (
     <main className="register">
-         <LogoLink />
-        <h1 className="register__title">Добро пожаловать!</h1>
-        <form className="register__form">
+      <LogoLink />
+      <h1 className="register__title">Добро пожаловать!</h1>
+      <form className="register__form" disabled={!isValid}>
         <label className="register__info-input">Имя</label>
-            <input className="register__input"  required type="text"
-         minLength="2" maxLength="30"></input>
+        <input
+          className="register__input"
+          required
+          type="text"
+          minLength="2"
+          maxLength="30"
+          name="name"
+          value={values.name || ""}
+          onChange={handleChange}
+        />
+        <span className="profile__error">{errors.name || ""} </span>
         <label className="register__info-input">E-mail</label>
-            <input className="register__input"  required type="email"
-         minLength="2" maxLength="30"></input>
-            <label className="register__info-input"  required type="password"
-         minLength="2" maxLength="30">Пароль</label>
-            <input className="register__input"></input>
-            <button className="register__button" type="submit">Зарегистрироваться</button>
-        </form>
-        <p className="register__paragraph">
-        Уже  зарегистрированы?&ensp;
+        <input
+          className="register__input"
+          required
+          type="email"
+          minLength="2"
+          maxLength="30"
+          name="email"
+          value={values.email || ""}
+          onChange={handleChange}
+        />
+        <span className="profile__error">{errors.email || ""} </span>
+        <label className="register__info-input">Пароль</label>
+        <input
+          className="register__input"
+          required
+          type="password"
+          minLength="2"
+          maxLength="30"
+          name="password"
+          value={values.password || ""}
+          onChange={handleChange}
+        />
+        <span className="profile__error">{errors.password || ""} </span>
+        <button className="register__button" type="submit">
+          Зарегистрироваться
+        </button>
+      </form>
+      <p className="register__paragraph">
+        Уже зарегистрированы?&ensp;
         <Link className="register__link" to="/signin">
-           Войти  
+          Войти
         </Link>
       </p>
     </main>

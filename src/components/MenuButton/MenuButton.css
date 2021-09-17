@@ -1,5 +1,5 @@
-.menu-button{
-  display: block;  
+.menu-button {
+  display: block;
   width: 42px;
   height: 38px;
   border: unset;
@@ -8,10 +8,9 @@
   background-repeat: no-repeat;
   background-color: unset;
   cursor: pointer;
-  
 }
-@media(min-width: 1280px) {
-    .menu-button{
-        display: none;
-    }    
+@media (min-width: 1280px) {
+  .menu-button {
+    display: none;
+  }
 }
