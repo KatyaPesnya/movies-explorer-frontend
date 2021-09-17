@@ -5,6 +5,7 @@
   padding-bottom: 27px;
   box-sizing: border-box;
   max-width: 1280px;
+  padding: 19px 15px 0;
 }
 .promo__container {
   display: flex;
@@ -14,12 +15,13 @@
 }
 @media (min-width: 768px) {
   .promo {
-    padding-bottom: 75px;
+    
+    padding: 18px 30px 48px;
   }
 }
 @media (min-width: 1280px) {
   .promo {
-    padding: 0px 70px 72px 70px;
+    padding: 20px 70px 45px 70px;
   }
   .promo__container {
     flex-direction: row-reverse;
@@ -41,14 +43,14 @@
   }
 }
 .promo__logo {
-  padding-top: 70px;
+  padding-top: 85px;
   height: 206px;
   width: 210.0005645751953px;
 }
 
 @media (min-width: 768px) {
   .promo__logo {
-    padding-top: 140px;
+    padding-top: 156px;
     height: 304px;
     width: 309.9998474121094px;
   }
@@ -79,7 +81,7 @@
 }
 @media (min-width: 1280px) {
   .promo__title {
-    padding-top: 75px;
+    padding-top: 88px;
     text-align: left;
     font-family: "Inter", Arial, sans-serif;
     font-size: 50px;

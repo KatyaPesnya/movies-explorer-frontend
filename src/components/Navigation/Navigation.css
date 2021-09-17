@@ -34,7 +34,7 @@
   padding-top: 144px;
 }
 .navigation__item {
-  font-family: Inter;
+  font-family: "Inter", Arial, sans-serif;
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
@@ -55,7 +55,7 @@
   border-radius: 20px;
   text-align: center;
   margin-left: 50px;
-  padding: 0;
+  padding: 6px;
   border: none;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   height: 32px;
@@ -63,10 +63,31 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 16px;
+  box-sizing: border-box;
 }
 .navigation__item_account_mob {
   display: block;
   margin: 444px auto 0;
+  box-sizing: border-box;
+  padding-top: 6px;
+  position: fixed;
+  bottom:46px;
+  right: 35%;
+}
+@media (min-width: 420px) {
+  .navigation__item_account_mob {
+  right: 37%;
+}
+}
+@media (min-width: 550px) {
+  .navigation__item_account_mob {
+  right: 44%;
+}
+}
+@media (min-width: 768px) {
+  .navigation__item_account_mob {
+  right: 28%;
+}
 }
 .navigation__link:hover {
   opacity: 0.7;

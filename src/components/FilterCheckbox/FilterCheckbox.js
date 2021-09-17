@@ -1,17 +1,12 @@
-import React from "react";
 
 function FilterCheckbox() {
   return (
-    <div className="search-unput__container">
-      <input
-        type="checkbox"
-        id="film"
-        className="search-unput__checkbox"
-        preloader="Короткометражки"
-      />
-      <label for="film" className="search-input__label">
-        Короткометражки
+     <div className="search-unput"> 
+      <label for="film" className="search-unput__container"> 
+        <input className="search-unput__checkbox" type="checkbox" id="film" /> 
+        <span className="search-unput__slider" /> 
       </label>
+      <p className="search-unput__text">Короткометражки</p>
     </div>
   );
 }

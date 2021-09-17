@@ -10,8 +10,15 @@
   .movies-card-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    justify-items: center;
     padding: 80px 0;
     gap: 30px;
+  }
+}
+@media (min-width: 980px) {
+  .movies-card-list {
+  grid-template-columns: repeat(3, 300px);
   }
 }
 @media (min-width: 1280px) {

@@ -11,6 +11,7 @@
   background-color: inherit;
   color: #fff;
   margin-top: 80px;
+  margin-bottom: 34px;
 }
 @media (min-width: 768px) {
   .navTab__button {

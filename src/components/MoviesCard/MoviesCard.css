@@ -65,6 +65,15 @@
     width: 340px;
   }
 }
+@media (min-width: 900px) {
+  .movies-card {
+    width: 300px;
+  }
+  .movies-card__img {
+    height: 190px;
+    width: 300px;
+  }
+}
 @media (min-width: 1280px) {
   .movies-card {
     width: 364px;
