@@ -55,6 +55,9 @@
   line-height: 15px;
   text-align: center;
 }
+.login__button:disabled{
+  background: gainsboro;
+}
 .login__paragraph {
   font-size: 12px;
   font-weight: 400;

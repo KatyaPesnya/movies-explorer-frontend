@@ -48,7 +48,7 @@ function Login({onLogin}) {
           onChange={handleChange}
         />
         <span className="profile__error">{errors.password || ""} </span>
-        <button className="login__button" type="submit">
+        <button className="login__button" type="submit" disabled={!isValid}>
           Войти
         </button>
       </form>

@@ -58,7 +58,7 @@ function Register({onRegister}) {
           onChange={handleChange}
         />
         <span className="profile__error">{errors.password || ""} </span>
-        <button className="register__button" type="submit">
+        <button className="register__button" type="submit" disabled={!isValid}>
           Зарегистрироваться
         </button>
       </form>

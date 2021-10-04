@@ -54,6 +54,9 @@
   line-height: 15px;
   text-align: center;
 }
+.register__button:disabled{
+  background: gainsboro;
+}
 .register__paragraph {
   font-size: 12px;
   font-weight: 400;
