@@ -3,9 +3,13 @@ import "./Profile.css";
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
 import useForm from "../../hooks/useForm";
+import  CurrentUserContext  from "../../contexts/CurrentUserContext";
 
-function Profile() {
-  const { values, handleChange, resetForm, errors, isValid } = useForm();
+function Profile({ onSignOut, onUpdateProfile}) {
+
+  const currentUser = React.useContext(CurrentUserContext)
+
+  const { values, handleChange, resetForm, errors, isValid } = useForm({currentUser});
 
   React.useEffect(() => {
     resetForm();
@@ -16,8 +20,8 @@ function Profile() {
       <div className="profile__container">
         <Header />
       </div>
-      <h1 className="profile__title">Привет, Екатерина!</h1>
-      <form className="profile__form" disabled={!isValid}>
+      <h1 className="profile__title">`Привет,{currentUser.name}!`</h1>
+      <form className="profile__form" disabled={!isValid} values={values} errors={errors}>
         <label className="profile__info-input" htmlFor="name">
           Имя
           <input
@@ -28,7 +32,7 @@ function Profile() {
             minLength="2"
             maxLength="30"
             placeholder="Katya"
-            value={values.name || ""}
+            value={currentUser.name || ""}
             onChange={handleChange}
           />
         </label>
@@ -41,19 +45,28 @@ function Profile() {
             required
             type="email"
             placeholder="katya@mail.ru"
-            value={values.email || ""}
+            value={currentUser.email || ""}
             onChange={handleChange}
           />
         </label>
 
         <span className="profile__error">{errors.email || ""} </span>
-        <button className="profile__paragraph" type="submit">
-          {" "}
+        <button 
+        className="profile__paragraph"
+         type="submit"
+           onClick={onUpdateProfile}
+          >
           Редактировать
         </button>
       </form>
 
-      <Link className="profile__link">Выйти из аккаунта</Link>
+      <button 
+      className="profile__link"
+      type="button"
+      onClick={onSignOut}
+      >
+        Выйти из аккаунта
+        </button>
     </main>
   );
 }

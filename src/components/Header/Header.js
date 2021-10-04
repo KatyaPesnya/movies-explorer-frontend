@@ -2,8 +2,9 @@ import React from "react";
 import LogoLink from "../LogoLink/LogoLink";
 import { NavLink } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
-function Header({ lending }) {
-  const loggedIn = false;
+
+function Header({ lending, loggedIn }) {
+  
   return (
     <header className="header">
       <LogoLink />

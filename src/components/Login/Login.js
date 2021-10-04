@@ -4,20 +4,26 @@ import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 
-function Login() {
+function Login({onLogin}) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
  React.useEffect(() => {
    resetForm()
  },[resetForm]);
 
+ function handleSubmit(e){
+  e.preventDefault()
+  onLogin(values)
+}
   return (
     <main className="login">
       <LogoLink />
       <h1 className="login__title">Рады видеть!</h1>
       <form 
       className="login__form"
-      disabled={!isValid}>
+      disabled={!isValid}
+      onSubmit={handleSubmit}
+     >
         <label className="login__info-input">E-mail</label>
         <input
           className="login__input"

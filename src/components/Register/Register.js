@@ -4,18 +4,24 @@ import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 
-function Register() {
+
+function Register({onRegister}) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
   React.useEffect(() => {
     resetForm();
   }, [resetForm]);
 
+  function handleSubmit(e){
+    e.preventDefault();
+    onRegister(values);
+    resetForm();
+  }
   return (
     <main className="register">
       <LogoLink />
       <h1 className="register__title">Добро пожаловать!</h1>
-      <form className="register__form" disabled={!isValid}>
+      <form className="register__form" disabled={!isValid} onSubmit={handleSubmit} >
         <label className="register__info-input">Имя</label>
         <input
           className="register__input"
@@ -45,7 +51,7 @@ function Register() {
           className="register__input"
           required
           type="password"
-          minLength="2"
+          minLength="8"
           maxLength="30"
           name="password"
           value={values.password || ""}

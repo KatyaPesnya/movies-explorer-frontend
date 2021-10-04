@@ -41,7 +41,13 @@
   margin-left: 10px;
   cursor: pointer;
 }
+.search-form__button:hover {
+  background: rgba(255, 103, 56, .8);
+}
 
+.search-form__button:disabled {
+  cursor: not-allowed;
+}
 @media (min-width: 768px) {
   .search-form__input {
     height: 48px;
