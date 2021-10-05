@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 
 
-function Register({onRegister}) {
+function Register({onRegister, isSuccess}) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
   React.useEffect(() => {
@@ -58,6 +58,8 @@ function Register({onRegister}) {
           onChange={handleChange}
         />
         <span className="profile__error">{errors.password || ""} </span>
+        {isSuccess ? (<span className="profile__error"> Что-то пошло не так! Попробуйте еще раз. </span>
+  ) : ""}
         <button className="register__button" type="submit" disabled={!isValid}>
           Зарегистрироваться
         </button>

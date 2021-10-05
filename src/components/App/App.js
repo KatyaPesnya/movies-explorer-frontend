@@ -12,84 +12,101 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 
 import mainApi from "../../utils/MainApi";
-import moviesApi from "../../utils/MoviesApi";
+// import moviesApi from "../../utils/MoviesApi";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [token, setToken] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   // const [movies, setMovies] = React.useState([]);
   const history = useHistory();
+const [isSuccess, setIsSuccess] = React.useState(false)
 
-
-
-  React.useEffect(() => {
-    console.log(loggedIn);
-    const token = localStorage.getItem('token');
-    mainApi.checkToken(token)
-      .then((data) => {
-        setLoggedIn(true);
-        console.log(data);
-        history.push('/movies');
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  React.useEffect(() => {
-    mainApi.getUserProfile()
-      .then((userData) => setCurrentUser(userData))
-      .catch((err) => console.log(err));
-  }, [loggedIn]);
-  // React.useEffect(() => {
-  //   if (loggedIn) {
-  //     Promise.all([mainApi.checkToken(), moviesApi.getMovies()])
-  //       .then(([userData]) => {
-  //         setCurrentUser(userData.data);
-  //         // setSavedMovies(moviesData.data);
-  //         // setSavedMoviesId(moviesData.map((movie) => movie.movieId));
-  //       })
-  //       .catch((e) => console.log(e));
-  //   }
-  // }, [loggedIn]);
-
-  const login = (data) => {
-    mainApi.login(data).then((res) => {
-      setLoggedIn(true);
-      localStorage.setItem('token', res.token);
-      history.push('/movies');
+  const checkToken = React.useCallback(
+    () => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      setToken(token);
+      mainApi.checkToken(token)
+    .then((res) => {
+      if (res) {
+        setLoggedIn(true); 
+        history.push("/");
+      }
     })
-    .catch((err) =>  console.log(err));
-}
-  const register = (data) => {
-    mainApi
-      .register(data)
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }, 
+  [history]
+  );
+
+  React.useEffect(() => {
+    checkToken();
+  }, [checkToken])
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem('jwt');
+  mainApi.getUserProfile(token)
       .then((res) => {
-        localStorage.setItem('token', res.token);
-        // history.push('/movies');
-    })
-      .catch(err =>  console.log(err))
+                const [userData] = res;
+                setCurrentUser(userData);
+                // setCards(cardsData);
+              })
+      .catch((err) => console.log(err));
+    }
+  }, [loggedIn])
+
+
+  function register(data) {
+    mainApi.register(data).then(
+      (data) => {
+        setIsSuccess(false);
+        history.push("/movies");
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsSuccess(true);
+        })  
   }
 
-  const handleSignOut = (evt) => {
+  function login(data) {
+    mainApi.login(data).then(
+      (res) => {
+        setLoggedIn(true);
+        localStorage.setItem("jwt", res.token);
+        setToken(res.token);
+        history.push("/movies");
+      })
+      .catch((err) => {
+        console.log(err);
+      })  
+  }
+
+  function handleSignOut(evt) {
     evt.preventDefault()
     setLoggedIn(false);
     setCurrentUser({})
     localStorage.clear()
     history.push("/")
   }
-
-  const handleUpdateProfile = (data) => {
+  
+ function handleUpdateProfile(data) {
     const token = localStorage.getItem("jwt")
     if(token) {
       mainApi.updateUserProfile(data, token)
       .then((res) =>{
         setCurrentUser(res.data)
-        localStorage.setItem('user', JSON.stringify(res.data))
+       
       })
       .catch((err) => {
         console.log(err);
       }); 
     }
   }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
@@ -124,6 +141,7 @@ function App(props) {
           </Route>
           <Route exact path="/signup">
             <Register 
+            isSuccess={isSuccess}
             onRegister={register}
              />
           </Route>
