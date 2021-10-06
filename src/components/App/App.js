@@ -20,7 +20,7 @@ function App(props) {
   const [currentUser, setCurrentUser] = React.useState({});
   // const [movies, setMovies] = React.useState([]);
   const history = useHistory();
-const [isSuccess, setIsSuccess] = React.useState(false)
+  const [isSuccess, setIsSuccess] = React.useState(false)
 
   const checkToken = React.useCallback(
     () => {
@@ -43,27 +43,29 @@ const [isSuccess, setIsSuccess] = React.useState(false)
   );
 
   React.useEffect(() => {
-    checkToken();
+      checkToken();
   }, [checkToken])
 
   React.useEffect(() => {
     if (loggedIn) {
       const token = localStorage.getItem('jwt');
-  mainApi.getUserProfile(token)
+      mainApi.getUserProfile(token)
       .then((res) => {
-                const [userData] = res;
-                setCurrentUser(userData);
-                // setCards(cardsData);
+                // const [userData] = res;
+                setCurrentUser(res.data);
               })
       .catch((err) => console.log(err));
     }
   }, [loggedIn])
 
-
   function register(data) {
     mainApi.register(data).then(
       (data) => {
         setIsSuccess(false);
+        login({
+email:data.email,
+password: data.password
+        })
         history.push("/movies");
       })
       .catch((err) => {
@@ -76,7 +78,7 @@ const [isSuccess, setIsSuccess] = React.useState(false)
     mainApi.login(data).then(
       (res) => {
         setLoggedIn(true);
-        localStorage.setItem("jwt", res.token);
+        localStorage.setItem("jwt", res.data.token);
         setToken(res.token);
         history.push("/movies");
       })
@@ -85,26 +87,31 @@ const [isSuccess, setIsSuccess] = React.useState(false)
       })  
   }
 
+
+ function handleUpdateProfile(data) {
+    const token = localStorage.getItem("jwt")
+    if(token) {
+      mainApi.updateUserProfile(data,  token)
+  
+      .then((res) =>{
+        setIsSuccess(false);
+        setCurrentUser(res.data)
+         localStorage.setItem('currentUser', JSON.stringify(res.data))
+      })
+      .catch((err) => {
+        setIsSuccess(true)
+        console.log(err);
+
+      }); 
+    }
+  }
+
   function handleSignOut(evt) {
     evt.preventDefault()
     setLoggedIn(false);
     setCurrentUser({})
     localStorage.clear()
     history.push("/")
-  }
-  
- function handleUpdateProfile(data) {
-    const token = localStorage.getItem("jwt")
-    if(token) {
-      mainApi.updateUserProfile(data, token)
-      .then((res) =>{
-        setCurrentUser(res.data)
-       
-      })
-      .catch((err) => {
-        console.log(err);
-      }); 
-    }
   }
 
   return (
@@ -133,6 +140,7 @@ const [isSuccess, setIsSuccess] = React.useState(false)
             component={Profile}
             onSignOut={handleSignOut}
             onUpdateProfile={handleUpdateProfile}
+             isSuccess={isSuccess}
           />
           <Route exact path="/signin">
             <Login 

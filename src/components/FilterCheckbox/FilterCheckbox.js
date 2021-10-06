@@ -2,7 +2,7 @@
 function FilterCheckbox() {
   return (
      <div className="search-unput"> 
-      <label for="film" className="search-unput__container"> 
+      <label htmlFor="film" className="search-unput__container"> 
         <input className="search-unput__checkbox" type="checkbox" id="film" /> 
         <span className="search-unput__slider" /> 
       </label>

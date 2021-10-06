@@ -5,11 +5,13 @@ import useForm from "../../hooks/useForm";
 import  CurrentUserContext  from "../../contexts/CurrentUserContext";
 
 
-function Profile({ onSignOut, onUpdateProfile,  }) {
+function Profile({ onSignOut, onUpdateProfile,isSuccess}) {
 
   const currentUser = React.useContext(CurrentUserContext)
+//  console.log(currentUser)
   const { values, handleChange, errors, resetForm, isValid } = useForm({});
-  const [formIsValid, setFormIsValid] = React.useState(false)
+
+  const [isValidForm, setIsValidForm] = React.useState(false)
 
  React.useEffect(()=>{
   if (currentUser) {
@@ -17,12 +19,17 @@ function Profile({ onSignOut, onUpdateProfile,  }) {
   }
  }, [currentUser, resetForm])
 
+React.useEffect(() =>{
+setIsValidForm(isValid)
+}, [values, isValid])
+
 React.useEffect(()=> {
 if(currentUser.name === values.name && currentUser.email === values.email ){
-  setFormIsValid(true);
-}else setFormIsValid(false)
+  setIsValidForm(true);
+}else setIsValidForm(false)
 }, [currentUser, values]
 )
+
   function handleSubmit(evt) {
     evt.preventDefault();
     onUpdateProfile({
@@ -30,7 +37,6 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
       email: values.email,
     });
   }
-
 
   return (
     <main className="profile">
@@ -47,7 +53,7 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
             placeholder={currentUser.name}
             className="profile__input"
             name="name"
-            required= 'true'
+            required
             type="text"
             minLength="2"
             maxLength="30"
@@ -63,7 +69,7 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
             className="profile__input"
             placeholder={currentUser.email}
             name="email"
-            required='true'
+            required
             type="email"
             id="email"
             value={values.email || ''}
@@ -72,9 +78,12 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
         </label>
 
         <span className="profile__error">{errors.email || ""} </span>
+{ isSuccess ? (<span className="profile__error"> Что-то пошло не так! Попробуйте еще раз. </span>
+  ) : ""}
         <button 
         className="profile__paragraph"
          type="submit"
+         disabled={!isValid}
           >
           Редактировать
         </button>

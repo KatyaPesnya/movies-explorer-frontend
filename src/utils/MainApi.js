@@ -40,8 +40,8 @@ class MainApi {
       }).then(this._handleOriginalResponse);
     };
 
-    getUserProfile(data, token) {
-      return fetch(`${this.baseUrl}/users/me`, {
+    getUserProfile(token) {
+      return fetch(`${this._url}/users/me`, {
         method: 'GET',
         headers: {
           ...this._headers,
@@ -60,10 +60,10 @@ class MainApi {
         body: JSON.stringify({
           name: data.name,
           email: data.email
-        })
+         } )
       }).then(this._handleOriginalResponse)
     };
-  
+   
     saveMovie(data, token) {
       return fetch(`${this._url}/movies`, {
         method: 'POST',

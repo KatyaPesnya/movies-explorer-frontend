@@ -98,6 +98,9 @@
   line-height: 13px;
   text-align: center;
 }
+.profile__paragraph:disabled{
+  color: gainsboro;
+}
 .profile__link {
   border: none;
   background-color: inherit;
