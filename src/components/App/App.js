@@ -21,6 +21,7 @@ function App(props) {
   // const [movies, setMovies] = React.useState([]);
   const history = useHistory();
   const [isSuccess, setIsSuccess] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const checkToken = React.useCallback(
     () => {
@@ -59,6 +60,7 @@ function App(props) {
   }, [loggedIn])
 
   function register(data) {
+    setIsLoading(true);
     mainApi.register(data).then(
       (data) => {
         setIsSuccess(false);
@@ -67,6 +69,7 @@ email:data.email,
 password: data.password
         })
         history.push("/movies");
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -75,12 +78,14 @@ password: data.password
   }
 
   function login(data) {
+    setIsLoading(true);
     mainApi.login(data).then(
       (res) => {
         setLoggedIn(true);
         localStorage.setItem("jwt", res.data.token);
         setToken(res.token);
         history.push("/movies");
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -90,10 +95,12 @@ password: data.password
 
  function handleUpdateProfile(data) {
     const token = localStorage.getItem("jwt")
+    setIsLoading(true);
     if(token) {
       mainApi.updateUserProfile(data,  token)
   
       .then((res) =>{
+        setIsLoading(false);
         setIsSuccess(false);
         setCurrentUser(res.data)
          localStorage.setItem('currentUser', JSON.stringify(res.data))
@@ -141,16 +148,20 @@ password: data.password
             onSignOut={handleSignOut}
             onUpdateProfile={handleUpdateProfile}
              isSuccess={isSuccess}
+             isLoading={isLoading}
           />
           <Route exact path="/signin">
             <Login 
             onLogin={login}
+            isLoading={isLoading}
+             
             />
           </Route>
           <Route exact path="/signup">
             <Register 
             isSuccess={isSuccess}
             onRegister={register}
+            isLoading={isLoading}
              />
           </Route>
           <Route path="*">

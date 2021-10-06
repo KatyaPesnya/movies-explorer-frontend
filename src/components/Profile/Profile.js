@@ -3,9 +3,9 @@ import "./Profile.css";
 import Header from "../Header/Header";
 import useForm from "../../hooks/useForm";
 import  CurrentUserContext  from "../../contexts/CurrentUserContext";
+import Preloader from "../Preloader/Preloader";
 
-
-function Profile({ onSignOut, onUpdateProfile,isSuccess}) {
+function Profile({ onSignOut, onUpdateProfile,isSuccess, isLoading}) {
 
   const currentUser = React.useContext(CurrentUserContext)
 //  console.log(currentUser)
@@ -44,6 +44,7 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
         <Header />
       </div>
       <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1> 
+      {isLoading ? <Preloader /> :(
       <form className="profile__form" 
       onSubmit={handleSubmit}
       >
@@ -88,6 +89,7 @@ if(currentUser.name === values.name && currentUser.email === values.email ){
           Редактировать
         </button>
       </form>
+           )}
       <button 
       className="profile__link"
       type="button"

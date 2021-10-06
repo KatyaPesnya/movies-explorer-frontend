@@ -3,8 +3,9 @@ import "./Login.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
+import Preloader from "../Preloader/Preloader";
 
-function Login({onLogin}) {
+function Login({ onLogin, isLoading }) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
  React.useEffect(() => {
@@ -19,6 +20,7 @@ function Login({onLogin}) {
     <main className="login">
       <LogoLink />
       <h1 className="login__title">Рады видеть!</h1>
+      {isLoading ? <Preloader /> :(
       <form 
       className="login__form"
       disabled={!isValid}
@@ -52,6 +54,7 @@ function Login({onLogin}) {
           Войти
         </button>
       </form>
+      )}
       <p className="login__paragraph">
         Ещё не зарегистрированы?&ensp;
         <Link className="login__link" to="/signup">

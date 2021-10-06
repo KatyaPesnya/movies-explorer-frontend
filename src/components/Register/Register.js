@@ -3,9 +3,10 @@ import "./Register.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
+import Preloader from "../Preloader/Preloader";
 
 
-function Register({onRegister, isSuccess}) {
+function Register({onRegister, isSuccess, isLoading}) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
   React.useEffect(() => {
@@ -21,6 +22,7 @@ function Register({onRegister, isSuccess}) {
     <main className="register">
       <LogoLink />
       <h1 className="register__title">Добро пожаловать!</h1>
+      {isLoading ? <Preloader /> :(
       <form className="register__form" disabled={!isValid} onSubmit={handleSubmit} >
         <label className="register__info-input">Имя</label>
         <input
@@ -64,6 +66,7 @@ function Register({onRegister, isSuccess}) {
           Зарегистрироваться
         </button>
       </form>
+      )}
       <p className="register__paragraph">
         Уже зарегистрированы?&ensp;
         <Link className="register__link" to="/signin">
