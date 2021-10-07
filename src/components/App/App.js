@@ -12,13 +12,13 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 
 import mainApi from "../../utils/MainApi";
-// import moviesApi from "../../utils/MoviesApi";
+ import moviesApi from "../../utils/MoviesApi";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [token, setToken] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  // const [movies, setMovies] = React.useState([]);
+  const [movies, setMovies] = React.useState([]);
   const history = useHistory();
   const [isSuccess, setIsSuccess] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false);
@@ -52,12 +52,12 @@ function App(props) {
       const token = localStorage.getItem('jwt');
       mainApi.getUserProfile(token)
       .then((res) => {
-                // const [userData] = res;
                 setCurrentUser(res.data);
               })
       .catch((err) => console.log(err));
     }
   }, [loggedIn])
+  
 
   function register(data) {
     setIsLoading(true);
@@ -120,6 +120,13 @@ password: data.password
     localStorage.clear()
     history.push("/")
   }
+  React.useEffect(() => {
+    moviesApi.getMovies()
+      .then((res) => {
+        setMovies(res);
+      })
+      .catch((err) => console.log(err));
+  }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
