@@ -48,16 +48,25 @@ function App(props) {
   }, [checkToken])
 
   React.useEffect(() => {
-    if (loggedIn) {
-      const token = localStorage.getItem('jwt');
-      mainApi.getUserProfile(token)
-      .then((res) => {
-                setCurrentUser(res.data);
-              })
-      .catch((err) => console.log(err));
-    }
-  }, [loggedIn])
-  
+    if (loggedIn){
+      const token = localStorage.getItem('jwt')
+      Promise.all([mainApi.getUserProfile(token), moviesApi.getMovies()])
+    
+  //     const token = localStorage.getItem('jwt');
+  //     mainApi.getUserProfile(token)
+  //     .then((res) => {
+  //               setCurrentUser(res.data);
+  //             })
+  //     .catch((err) => console.log(err));
+  //   }
+  // }, [loggedIn])
+  .then(([userData, moviesData]) => {
+    setCurrentUser(userData.data);
+    setMovies(moviesData);
+  })
+  .catch((e) => console.log(e));
+}
+}, [loggedIn]);
 
   function register(data) {
     setIsLoading(true);
@@ -120,13 +129,14 @@ password: data.password
     localStorage.clear()
     history.push("/")
   }
-  React.useEffect(() => {
-    moviesApi.getMovies()
-      .then((res) => {
-        setMovies(res);
-      })
-      .catch((err) => console.log(err));
-  }, [loggedIn]);
+  // React.useEffect(() => {
+  //   moviesApi.getMovies()
+  //     .then((res) => {
+  //       setMovies(res);
+       
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -139,6 +149,7 @@ password: data.password
             exact
             path="/movies"
             loggedIn={loggedIn}
+            movies={movies}
             component={Movies}
           />
           <ProtectedRoute

@@ -49,6 +49,8 @@
 
 .search-form__button:disabled {
   cursor: not-allowed;
+  background-color: gainsboro;
+
 }
 @media (min-width: 768px) {
   .search-form__input {
