@@ -156,34 +156,54 @@ password: data.password
   }
   
   
-  function handleSearchMovies(text) {
-    setIsLoading(true)
-    if (movies.length > 0) {
-      const resultFilter = filter(movies, text)
-      if (resultFilter.length > 0) {
-        setIsNotFound(false)
-      } else {
-        setIsNotFound(true)
-      }
-    } else {
-      moviesApi.getMovies()
-      .then((data) => {
-        setMovies(data)
-        localStorage.setItem('movies', JSON.stringify(data));
-        const result = filter(data, text);
-          if (result.length > 0) {
-              setIsNotFound(false);
-          }
-          else {
-            setIsNotFound(true);
-          }
-      })
-    }
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }
+  // function handleSearchMovies(text = {}) {
 
+  //   setIsLoading(true);
+  //   if (movies.length > 0) {
+  //     const resultFilter = filter(movies, text)
+  //     if (resultFilter.length > 0) {
+  //       setIsNotFound(false)
+  //     } else {
+  //       setIsNotFound(true)
+  //     }
+  //   } else {
+  //     setIsLoading(true);
+  //     setIsSuccess(false);
+  //     //setIsNotFound(false);
+  //     debugger;
+  // moviesApi
+  //     .getMovies()
+  //     .then((res) => {
+  //       const foundMovies = filter(text, res.data);
+  //       setMovies(foundMovies);
+  //       localStorage.setItem('movies', JSON.stringify(res.data));
+       
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setIsSuccess(true);
+       
+//       })
+//     .finally(() => {
+//       setIsLoading(false);
+//     })
+// };
+//   }
+const handleSearchMovies = (text = {}) => {
+  const localMovies = JSON.parse(localStorage.getItem('movies'));
+  if (localMovies) {
+    const filteredMovies = filter(text, localMovies);
+
+    if (filteredMovies.length === 0) {
+      setIsNotFound(true);
+    } else {
+      setIsNotFound(false);
+    }
+    localStorage.setItem('movies', JSON.stringify((filteredMovies)));
+
+    setMovies((filteredMovies));
+  }
+};
   function filter(film, text) {
     // debugger;
     let result = [];
@@ -213,6 +233,7 @@ password: data.password
             isLoading={isLoading}
             onSearchMovies={handleSearchMovies}
             isNotFound={isNotFound}
+            isSuccess={isSuccess}
           />
           <ProtectedRoute
             exact
