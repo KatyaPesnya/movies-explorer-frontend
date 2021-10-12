@@ -5,7 +5,7 @@ import useForm from "../../hooks/useForm";
 import  CurrentUserContext  from "../../contexts/CurrentUserContext";
 import Preloader from "../Preloader/Preloader";
 
-function Profile({ onSignOut, onUpdateProfile,isSuccess, isLoading}) {
+function Profile({ onSignOut, onUpdateProfile, isSuccess, isLoading}) {
 
   const currentUser = React.useContext(CurrentUserContext)
 //  console.log(currentUser)

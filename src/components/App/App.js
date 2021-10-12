@@ -60,7 +60,8 @@ function App(props) {
   //     .catch((err) => console.log(err));
   //   }
   // }, [loggedIn])
-  .then(([userData, moviesData]) => {
+  .then((res) => {
+    const [userData, moviesData] = res;
     setCurrentUser(userData.data);
     setMovies(moviesData);
   })
