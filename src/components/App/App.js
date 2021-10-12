@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory,  useLocation  } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
@@ -20,28 +20,50 @@ function App(props) {
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const history = useHistory();
+  const pathname = useLocation();
   const [isSuccess, setIsSuccess] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isNotFound, setIsNotFound]=React.useState(false);
 
   const checkToken = React.useCallback(
     () => {
     const token = localStorage.getItem("jwt");
+    const movies = localStorage.getItem('movies')
     if (token) {
       setToken(token);
-      mainApi.checkToken(token)
-    .then((res) => {
-      if (res) {
-        setLoggedIn(true); 
-        history.push("/");
+      if (movies) {
+        const result = JSON.parse(movies);
+        setMovies(result);
       }
-    })
-      .catch((err) => {
-        console.log(err);
-      });
+      mainApi.checkToken(token)
+      .then((data) => {
+        if (data) {
+            history.push(pathname.pathname)
+            setLoggedIn(true)
+        }
+      })
+      .catch(err => { 
+          console.log(err);
+          history.push('/signin');
+      })
     }
-  }, 
-  [history]
+  },[history]
   );
+  //     mainApi.checkToken(token)
+  //   .then((res) => {
+  //     if (res) {
+  //       setLoggedIn(true); 
+  //        history.push(pathname.pathname)
+  //     }
+  //   })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   }
+  // }, 
+  // [history]
+  // );
+ 
 
   React.useEffect(() => {
       checkToken();
@@ -127,17 +149,51 @@ password: data.password
     evt.preventDefault()
     setLoggedIn(false);
     setCurrentUser({})
-    localStorage.clear()
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('movies')
     history.push("/")
+    setMovies([]);
   }
-  // React.useEffect(() => {
-  //   moviesApi.getMovies()
-  //     .then((res) => {
-  //       setMovies(res);
-       
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [loggedIn]);
+  
+  
+  function handleSearchMovies(text) {
+    setIsLoading(true)
+    if (movies.length > 0) {
+      const resultFilter = filter(movies, text)
+      if (resultFilter.length > 0) {
+        setIsNotFound(false)
+      } else {
+        setIsNotFound(true)
+      }
+    } else {
+      moviesApi.getMovies()
+      .then((data) => {
+        setMovies(data)
+        localStorage.setItem('movies', JSON.stringify(data));
+        const result = filter(data, text);
+          if (result.length > 0) {
+              setIsNotFound(false);
+          }
+          else {
+            setIsNotFound(true);
+          }
+      })
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }
+
+  function filter(film, text) {
+    let result = [];
+    film.forEach((movie) => {
+      if(movie.nameRU.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+        result.push(movie)
+      }
+    })
+    return result;
+  }
+ 
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -152,6 +208,8 @@ password: data.password
             loggedIn={loggedIn}
             movies={movies}
             component={Movies}
+            isLoading={isLoading}
+            onSubmit={handleSearchMovies}
           />
           <ProtectedRoute
             exact

@@ -3,20 +3,21 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import useForm from "../../hooks/useForm";
 
 
-function SearchForm() {
+function SearchForm({onSubmit}) {
 
   const { values, handleChange, isValid } = useForm();
   
   const handleSubmit = (evt) => {
     evt.preventDefault();
-  console.log('форма пустая ')
+    onSubmit(values)
+
   };
 
   return (
     <form className="search-form" onSubmit={handleSubmit}>
       <div>
-        <input className="search-form__input" type="text" placeholder="Фильм" required   onChange={handleChange} name="search"/>
-        <button className="search-form__button" type="submit" value="search" disabled={!isValid} onSubmit={handleSubmit}>
+        <input className="search-form__input" value ={values} type="text" placeholder="Фильм" required   onChange={handleChange} name="search"/>
+        <button className="search-form__button" type="submit" value="search" disabled={!isValid}>
           Найти
         </button>
       </div>
