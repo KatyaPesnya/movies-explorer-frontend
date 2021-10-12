@@ -3,6 +3,10 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 
 function MoviesCardList({movies}) {
+
+  if (!movies || !movies.length) return null
+  console.log(movies)
+debugger;
   return (
     <ul className="movies-card-list">
    { movies.map((movie) => (
@@ -10,8 +14,8 @@ function MoviesCardList({movies}) {
    movie ={ movie}
    key ={movie.id}
        />
-  ))}
-    
+  ))
+}  
     </ul>
   );
 }

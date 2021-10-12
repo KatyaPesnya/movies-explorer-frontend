@@ -5,11 +5,12 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 
-function Movies({ movies, isLoading, onSubmit}) {
+function Movies({ movies, isLoading, onSearchMovies}) {
+  // console.log(movies)
   return (
     <main className="movies">
       <Header />
-      <SearchForm onMoviesSearch={onSubmit}/>
+      <SearchForm onSearchMovies={onSearchMovies}/>
       {/* {isLoading && <Preloader/> } */}
     
       <MoviesCardList movies={movies}/>

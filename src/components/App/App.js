@@ -185,12 +185,14 @@ password: data.password
   }
 
   function filter(film, text) {
+    // debugger;
     let result = [];
-    film.forEach((movie) => {
-      if(movie.nameRU.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+    film.data.forEach((movie) => {
+      if(movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
         result.push(movie)
       }
     })
+    console.log(result)
     return result;
   }
  
@@ -209,7 +211,8 @@ password: data.password
             movies={movies}
             component={Movies}
             isLoading={isLoading}
-            onSubmit={handleSearchMovies}
+            onSearchMovies={handleSearchMovies}
+            isNotFound={isNotFound}
           />
           <ProtectedRoute
             exact
