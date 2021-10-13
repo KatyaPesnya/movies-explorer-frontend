@@ -73,15 +73,6 @@ function App(props) {
     if (loggedIn){
       const token = localStorage.getItem('jwt')
       Promise.all([mainApi.getUserProfile(token), moviesApi.getMovies()])
-    
-  //     const token = localStorage.getItem('jwt');
-  //     mainApi.getUserProfile(token)
-  //     .then((res) => {
-  //               setCurrentUser(res.data);
-  //             })
-  //     .catch((err) => console.log(err));
-  //   }
-  // }, [loggedIn])
   .then((res) => {
     const [userData, moviesData] = res;
     setCurrentUser(userData.data);
@@ -155,55 +146,39 @@ password: data.password
     setMovies([]);
   }
   
-  
-  // function handleSearchMovies(text = {}) {
-
-  //   setIsLoading(true);
-  //   if (movies.length > 0) {
-  //     const resultFilter = filter(movies, text)
-  //     if (resultFilter.length > 0) {
-  //       setIsNotFound(false)
-  //     } else {
-  //       setIsNotFound(true)
-  //     }
-  //   } else {
-  //     setIsLoading(true);
-  //     setIsSuccess(false);
-  //     //setIsNotFound(false);
-  //     debugger;
-  // moviesApi
-  //     .getMovies()
-  //     .then((res) => {
-  //       const foundMovies = filter(text, res.data);
-  //       setMovies(foundMovies);
-  //       localStorage.setItem('movies', JSON.stringify(res.data));
-       
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setIsSuccess(true);
-       
-//       })
-//     .finally(() => {
-//       setIsLoading(false);
-//     })
-// };
-//   }
 const handleSearchMovies = (text = {}) => {
-  const localMovies = JSON.parse(localStorage.getItem('movies'));
-  if (localMovies) {
-    const filteredMovies = filter(text, localMovies);
-
+setIsLoading(true)
+  if (!movies.length === 0) {
+    const filteredMovies = filter(movies, text);
     if (filteredMovies.length === 0) {
       setIsNotFound(true);
     } else {
       setIsNotFound(false);
     }
-    localStorage.setItem('movies', JSON.stringify((filteredMovies)));
-
-    setMovies((filteredMovies));
+  } else {
+    moviesApi
+          .getMovies()
+          .then((data) => { 
+            setMovies(data)
+            localStorage.setItem('movies', JSON.stringify(data));
+            const result = filter(data, text)
+            if(result.length === 0) {
+              setIsNotFound(true)
+            } else {
+              setIsNotFound(false)
+            }
+  })
+      .catch((err) => {
+        console.log(err);
+        setIsSuccess(true);
+       
+      })
+    .finally(() => {
+      setIsLoading(false);
+    })
   }
 };
+
   function filter(film, text) {
     // debugger;
     let result = [];
