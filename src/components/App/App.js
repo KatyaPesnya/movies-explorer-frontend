@@ -19,6 +19,7 @@ function App(props) {
   const [token, setToken] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState([]);
   const history = useHistory();
   const pathname = useLocation();
   const [isSuccess, setIsSuccess] = React.useState(false)
@@ -53,6 +54,12 @@ function App(props) {
   React.useEffect(() => {
       checkToken();
   }, [checkToken])
+
+  React.useEffect(() => {
+    if (loggedIn){
+      history.push('./');
+    }
+  }, [loggedIn, history])
 
   React.useEffect(() => {
     if (loggedIn){
