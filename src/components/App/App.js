@@ -49,21 +49,6 @@ function App(props) {
     }
   },[history]
   );
-  //     mainApi.checkToken(token)
-  //   .then((res) => {
-  //     if (res) {
-  //       setLoggedIn(true); 
-  //        history.push(pathname.pathname)
-  //     }
-  //   })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   }
-  // }, 
-  // [history]
-  // );
- 
 
   React.useEffect(() => {
       checkToken();
@@ -73,10 +58,9 @@ function App(props) {
     if (loggedIn){
       const token = localStorage.getItem('jwt')
       Promise.all([mainApi.getUserProfile(token), moviesApi.getMovies()])
-  .then((res) => {
-    const [userData, moviesData] = res;
+  .then(([userData, moviesData]) => {
     setCurrentUser(userData.data);
-    setMovies(moviesData);
+    setMovies(moviesData.data);
   })
   .catch((e) => console.log(e));
 }
@@ -187,7 +171,7 @@ setIsLoading(true)
         result.push(movie)
       }
     })
-    console.log(result)
+   // console.log(result)
     return result;
   }
  
