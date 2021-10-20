@@ -22,7 +22,8 @@ function App(props) {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const history = useHistory();
   const pathname = useLocation();
-  const [isSuccess, setIsSuccess] = React.useState(false)
+  const [isSuccess, setIsSuccess] = React.useState('');
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound]=React.useState(false);
 
@@ -74,55 +75,54 @@ function App(props) {
 }, [loggedIn]);
 
   function register(data) {
-    setIsLoading(true);
-    mainApi.register(data).then(
-      (data) => {
-        setIsSuccess(false);
-        login({
-email:data.email,
-password: data.password
-        })
+   return mainApi.register(data)
+    .then((data) => {
+      if (data) {
+        login({ email:data.email, password: data.password })
         history.push("/movies");
-        setIsLoading(false);
-      })
+    } else {
+        Promise.reject(`Ошибка ${data.status}`)
+    }
+  }) 
       .catch((err) => {
         console.log(err);
-        setIsSuccess(true);
+        setIsSuccess('Что-то пошло не так. Попробуйте еще раз.');
         })  
   }
 
   function login(data) {
-    setIsLoading(true);
+
     mainApi.login(data).then(
       (res) => {
         setLoggedIn(true);
         localStorage.setItem("jwt", res.data.token);
         setToken(res.token);
         history.push("/movies");
-        setIsLoading(false);
+
       })
       .catch((err) => {
         console.log(err);
+        setIsSuccess('Что-то пошло не так. Попробуйте еще раз.');
       })  
   }
 
 
  function handleUpdateProfile(data) {
+ 
     const token = localStorage.getItem("jwt")
-    setIsLoading(true);
     if(token) {
       mainApi.updateUserProfile(data,  token)
-  
       .then((res) =>{
-        setIsLoading(false);
-        setIsSuccess(false);
+    
+        localStorage.setItem('currentUser', JSON.stringify(res.data))
         setCurrentUser(res.data)
-         localStorage.setItem('currentUser', JSON.stringify(res.data))
+         history.push(pathname.pathname)   
+         setIsSuccess('Профиль успешно обновлен.'); 
       })
       .catch((err) => {
-        setIsSuccess(true)
+        setIsSuccess('При обновлении профиля произошла ошибка.')
         console.log(err);
-
+       
       }); 
     }
   }
@@ -215,20 +215,25 @@ setIsLoading(true)
             onSignOut={handleSignOut}
             onUpdateProfile={handleUpdateProfile}
              isSuccess={isSuccess}
-             isLoading={isLoading}
+             setIsSuccess={setIsSuccess}
+        
+           
           />
           <Route exact path="/signin">
             <Login 
             onLogin={login}
-            isLoading={isLoading}
+            setIsSuccess={setIsSuccess}
+            isSuccess={isSuccess}
              
             />
           </Route>
           <Route exact path="/signup">
             <Register 
             isSuccess={isSuccess}
+            setIsSuccess={setIsSuccess}
             onRegister={register}
-            isLoading={isLoading}
+    
+           
              />
           </Route>
           <Route path="*">

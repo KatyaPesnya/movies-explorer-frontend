@@ -3,24 +3,31 @@ import "./Login.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import Preloader from "../Preloader/Preloader";
 
-function Login({ onLogin, isLoading }) {
+
+function Login({ onLogin, isSuccess, setIsSuccess }) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
  React.useEffect(() => {
    resetForm()
  },[resetForm]);
 
+ function handleChangeInput(e) {
+  handleChange(e);
+  if (isSuccess.length > 0) {
+      setIsSuccess('');
+  }
+}; 
  function handleSubmit(e){
   e.preventDefault()
   onLogin(values)
+  resetForm()
 }
   return (
     <main className="login">
       <LogoLink />
       <h1 className="login__title">Рады видеть!</h1>
-      {isLoading ? <Preloader /> :(
+    
       <form 
       className="login__form"
       disabled={!isValid}
@@ -35,7 +42,7 @@ function Login({ onLogin, isLoading }) {
           minLength="2"
           maxLength="30"
           value={values.email || ""}
-          onChange={handleChange}
+          onChange={handleChangeInput}
         />
         <span className="profile__error">{errors.email || ""} </span>
         <label className="login__info-input">Пароль</label>
@@ -47,14 +54,15 @@ function Login({ onLogin, isLoading }) {
           minLength="2"
           maxLength="30"
           value={values.password || ""}
-          onChange={handleChange}
+          onChange={handleChangeInput}
         />
         <span className="profile__error">{errors.password || ""} </span>
+        <span className="profile__error">{isSuccess} </span>
         <button className="login__button" type="submit" disabled={!isValid}>
           Войти
         </button>
       </form>
-      )}
+
       <p className="login__paragraph">
         Ещё не зарегистрированы?&ensp;
         <Link className="login__link" to="/signup">
