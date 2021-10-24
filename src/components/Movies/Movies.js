@@ -5,20 +5,19 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 
-function Movies({ movies, isLoading, isSuccess, isNotFound, onSearchMovies}) {
-   //console.log(movies)
- 
+function Movies({ movies, isLoading, isSuccess, setIsSuccess,isNotFound, onSearchMovies,shortFilmValue,setShortFilmValue}) {
+  // console.log(movies)
+
   return (
     <main className="movies">
       <Header />
-      <SearchForm onSearchMovies={onSearchMovies}/>
+      <SearchForm onSearchMovies={onSearchMovies} shortFilmValue={shortFilmValue} setShortFilmValue={setShortFilmValue}/>
       {isLoading && <Preloader/> }
       {isNotFound && (
         <p className="profile__error"> Ничего не найдено</p> )}
      
       {isSuccess &&  (<p className="profile__error"> 
-         Во время запроса произошла ошибка. Возможно, проблема с соединением
-         или сервер недоступен. Подождите немного и попробуйте ещё раз{" "}
+         {setIsSuccess}
          </p>)}
      <>
       <MoviesCardList movies={movies}/>

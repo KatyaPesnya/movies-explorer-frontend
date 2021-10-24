@@ -5,7 +5,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 function MoviesCardList({movies}) {
 
   if (!movies || !movies.length) return null;
-  console.log(movies)
+  //console.log(movies)
 
   return (
     <ul className="movies-card-list">

@@ -2,10 +2,10 @@ import React from "react";
 import "./Login.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
-import useForm from "../../hooks/useForm";
+import {useForm} from "../../hooks/useForm";
 
 
-function Login({ onLogin, isSuccess, setIsSuccess }) {
+function Login({ onLogin, isSuccess, setIsSuccess, }) {
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
  React.useEffect(() => {
@@ -57,7 +57,7 @@ function Login({ onLogin, isSuccess, setIsSuccess }) {
           onChange={handleChangeInput}
         />
         <span className="profile__error">{errors.password || ""} </span>
-        <span className="profile__error">{isSuccess} </span>
+        <span className="profile__error"> {isSuccess} </span>
         <button className="login__button" type="submit" disabled={!isValid}>
           Войти
         </button>

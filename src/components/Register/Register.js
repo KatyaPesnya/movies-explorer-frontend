@@ -2,7 +2,7 @@ import React from "react";
 import "./Register.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
-import useForm from "../../hooks/useForm";
+import {useForm} from "../../hooks/useForm";
 
 
 

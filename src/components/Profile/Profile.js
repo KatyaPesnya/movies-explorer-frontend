@@ -1,9 +1,9 @@
 import React from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
-import useForm from "../../hooks/useForm";
+import {useForm} from "../../hooks/useForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import Preloader from "../Preloader/Preloader";
+
 
 function Profile({
   onSignOut,

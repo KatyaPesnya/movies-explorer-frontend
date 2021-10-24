@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 function MoviesCard({movie}) {
  
   const { pathname } = useLocation();
-   console.log(movie)
+ //  console.log(movie)
    
   function handleClick(e) {
     e.target.classList.add("movies-card__like_active");
