@@ -5,7 +5,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 
-function Movies({ movies, isLoading, isSuccess, setIsSuccess,isNotFound, onSearchMovies,shortFilmValue,setShortFilmValue}) {
+function Movies({ movies, isLoading, isNotFound, onSearchMovies,shortFilmValue,setShortFilmValue,errorMessageMovies}) {
   // console.log(movies)
 
   return (
@@ -13,12 +13,16 @@ function Movies({ movies, isLoading, isSuccess, setIsSuccess,isNotFound, onSearc
       <Header />
       <SearchForm onSearchMovies={onSearchMovies} shortFilmValue={shortFilmValue} setShortFilmValue={setShortFilmValue}/>
       {isLoading && <Preloader/> }
+      
       {isNotFound && (
         <p className="profile__error"> Ничего не найдено</p> )}
      
-      {isSuccess &&  (<p className="profile__error"> 
-         {setIsSuccess}
+      {errorMessageMovies &&  (<p className="profile__error"> 
+      Во время запроса произошла ошибка. Возможно,
+      проблема с соединением или сервер недоступен. 
+      Подождите немного и попробуйте ещё раз.
          </p>)}
+    
      <>
       <MoviesCardList movies={movies}/>
       <button className="movies__button-continuation">Ещё</button>

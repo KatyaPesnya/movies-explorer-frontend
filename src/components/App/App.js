@@ -27,7 +27,7 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
-
+  const [errorMessageMovies, setErrorMessageMovies]=React.useState(false);
   const checkToken = React.useCallback(() => {
     const token = localStorage.getItem("jwt");
     const movies = localStorage.getItem("movies");
@@ -52,9 +52,7 @@ function App() {
     }
   }, [history]);
 
-  React.useEffect(() => {
-    checkToken();
-  }, [checkToken]);
+
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -136,7 +134,7 @@ function App() {
 
   function handleSearchMovies(text) {
     setIsLoading(true);
-
+    setErrorMessageMovies(false)
     if (!movies.length === 0) {
       const filteredMovies = filterKeyword(movies, text);
       
@@ -164,20 +162,19 @@ function App() {
           if (shortFilmValue) {
             const filteredMoviesShort = filterShortfilm(filteredMovies);
             if (!filteredMoviesShort.length === 0) {
-
               setIsNotFound(false);
             } else {
-              setFilteredMovies(!filteredMovies)
               setIsNotFound(true);
+              setFilteredMovies(!filteredMovies)
+              
             }
             setFilteredShortMovies(filteredMoviesShort);
           }
         })
         .catch((err) => {
           console.log(err);
-          setIsSuccess(
-            "Во время запроса произошла ошибка. Возможно,проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз."
-          );
+          setErrorMessageMovies(true)
+          setIsNotFound(false);
         });
       setTimeout(() => {
         setIsLoading(false);
@@ -220,7 +217,7 @@ function App() {
               filteredShortMovies.length ? filteredShortMovies : filteredMovies
             }
             component={Movies}
-          
+            errorMessageMovies={errorMessageMovies}
             isLoading={isLoading}
             onSearchMovies={handleSearchMovies}
             isNotFound={isNotFound}
