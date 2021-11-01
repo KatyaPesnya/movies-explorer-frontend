@@ -28,6 +28,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [errorMessageMovies, setErrorMessageMovies]=React.useState(false);
+  
   const checkToken = React.useCallback(() => {
     const token = localStorage.getItem("jwt");
     const movies = localStorage.getItem("movies");
@@ -131,10 +132,11 @@ function App() {
     history.push("/");
     setMovies([]);
   }
-
+// запрос с сервера для поиска фильмов
   function handleSearchMovies(text) {
     setIsLoading(true);
     setErrorMessageMovies(false)
+    setIsNotFound(false);
     if (!movies.length === 0) {
       const filteredMovies = filterKeyword(movies, text);
       
@@ -164,11 +166,11 @@ function App() {
             if (!filteredMoviesShort.length === 0) {
               setIsNotFound(false);
             } else {
-              setIsNotFound(true);
-              setFilteredMovies(!filteredMovies)
-              
+            //  setIsNotFound(true);
+            //  setFilteredMovies(!filteredMovies)
+            setFilteredShortMovies(filteredMoviesShort);  
             }
-            setFilteredShortMovies(filteredMoviesShort);
+         
           }
         })
         .catch((err) => {
@@ -221,8 +223,6 @@ function App() {
             isLoading={isLoading}
             onSearchMovies={handleSearchMovies}
             isNotFound={isNotFound}
-            setIsSuccess={setIsSuccess}
-            isSuccess={isSuccess}
             shortFilmValue={shortFilmValue}
             setShortFilmValue={setShortFilmValue}
           />

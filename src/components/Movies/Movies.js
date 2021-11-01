@@ -8,6 +8,7 @@ import Header from "../Header/Header";
 function Movies({ movies, isLoading, isNotFound, onSearchMovies,shortFilmValue,setShortFilmValue,errorMessageMovies}) {
   // console.log(movies)
 
+
   return (
     <main className="movies">
       <Header />
@@ -25,7 +26,7 @@ function Movies({ movies, isLoading, isNotFound, onSearchMovies,shortFilmValue,s
     
      <>
       <MoviesCardList movies={movies}/>
-      <button className="movies__button-continuation">Ещё</button>
+     
       <Footer / >
         </>
     </main>
