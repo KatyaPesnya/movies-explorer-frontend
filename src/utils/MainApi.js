@@ -64,14 +64,29 @@ class MainApi {
       }).then(this._handleOriginalResponse)
     };
    
-    saveMovie(data, token) {
+    saveMovie(movie, token) {
+  console.log(movie)
+  console.log(token)
       return fetch(`${this._url}/movies`, {
         method: 'POST',
         headers: {
           ...this._headers,
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+       
+        body: JSON.stringify({
+          country: movie.country || "null",
+          director: movie.director  || "null",
+          duration: movie.duration,
+          year: movie.year,
+          description: movie.description,
+          image: 'https://api.nomoreparties.co/beatfilm-movies' + movie.image.url,
+          trailer: movie.trailerLink,
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN || "null",
+          thumbnail: 'https://api.nomoreparties.co/beatfilm-movies' + movie.image.formats.thumbnail.url,
+          movieId: movie.id,
+      }),
       }).then(this._handleOriginalResponse)
     };
   

@@ -1,19 +1,50 @@
 import React from "react";
 import SearchForm from "../../components/SearchForm/SearchForm";
-// import Preloader from '../../components/Preloader/Preloader'
+import Preloader from "../../components/Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 
-function SavedMovies(props) {
+function SavedMovies({
+  movies,
+  savedMovies,
+  isLoading,
+  isNotFound,
+  onSearchMovies,
+  shortFilmValue,
+  setShortFilmValue,
+  errorMessageMovies,
+  onSavedMoviesSearch,
+  savedMoviesAfterLike,
+  deleteSavedMovies,
+}) {
   return (
     <main className="movies">
       <div className="movies__container">
         <Header />
       </div>
-      <SearchForm />
-      {/* <Preloader /> */}
-      <MoviesCardList />
+      <SearchForm
+        onSearchMovies={onSearchMovies}
+        onSavedMoviesSearch={onSavedMoviesSearch}
+        shortFilmValue={shortFilmValue}
+        setShortFilmValue={setShortFilmValue}
+        isSaved={true}
+      />
+      {isLoading && <Preloader />}
+      {isNotFound && <p className="profile__error"> Ничего не найдено</p>}
+      {errorMessageMovies && (
+        <p className="profile__error">
+          Во время запроса произошла ошибка. Возможно, проблема с соединением
+          или сервер недоступен. Подождите немного и попробуйте ещё раз.
+        </p>
+      )}
+      <MoviesCardList
+        movies={movies}
+        savedMovies={savedMovies}
+        isSaved={true}
+        savedMoviesAfterLike={savedMoviesAfterLike}
+        deleteSavedMovies={deleteSavedMovies}
+      />
       <Footer />
     </main>
   );
