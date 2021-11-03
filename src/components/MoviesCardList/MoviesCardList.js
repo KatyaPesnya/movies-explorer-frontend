@@ -2,6 +2,7 @@ import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import moviesCount from "../../utils/moviesCount";
 
+<<<<<<< HEAD
 function MoviesCardList({ 
   movies,
   savedMovies,
@@ -9,6 +10,9 @@ function MoviesCardList({
   deleteSavedMovies,
   isSaved,
    }) {
+=======
+function MoviesCardList({ movies }) {
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
   // if (!movies || !movies.length) return null;
 
   const [moviesCountStart, setMoviesCountStart] = React.useState(moviesCount());
@@ -39,6 +43,7 @@ function MoviesCardList({
       <ul className="movies-card-list">
         {newMovies.length ?
           newMovies.map((movie) => {
+<<<<<<< HEAD
             return <MoviesCard 
             movie={movie}
             key={isSaved ? movie.id : movie._id}
@@ -47,6 +52,9 @@ function MoviesCardList({
             deleteSavedMovies={deleteSavedMovies}
             isSaved={isSaved}
               />;
+=======
+            return <MoviesCard movie={movie} key={movie.id} />;
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
           }): null }
       </ul>
       {(newMovies.length && (movies.length !== newMovies.length)) ? ( 

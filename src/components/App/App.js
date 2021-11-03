@@ -27,6 +27,7 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
+<<<<<<< HEAD
   const [errorMessageMovies, setErrorMessageMovies] = React.useState(false);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedFilteredMovies, setSavedFilteredMovies] = React.useState([]);
@@ -37,22 +38,36 @@ function App() {
     const token = localStorage.getItem("jwt");
     const movies = localStorage.getItem("movies");
    // const savedMovies = localStorage.getItem("savedMovies");
+=======
+  const [errorMessageMovies, setErrorMessageMovies]=React.useState(false);
+  
+  const checkToken = React.useCallback(() => {
+    const token = localStorage.getItem("jwt");
+    const movies = localStorage.getItem("movies");
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
     if (token) {
       setToken(token);
       if (movies) {
         const result = JSON.parse(movies);
         setMovies(result);
       }
+<<<<<<< HEAD
       // if (savedMovies) {
       //   const savedResult = JSON.parse(savedMovies);
       //  setSavedMovies(savedResult);
       //   setSavedFilteredMovies(savedResult);
       // }
       history.push("/movies");
+=======
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
       mainApi
         .checkToken(token)
         .then((data) => {
           if (data) {
+<<<<<<< HEAD
+=======
+            history.push(pathname.pathname);
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
             setLoggedIn(true);
           }
         })
@@ -62,10 +77,15 @@ function App() {
         });
     }
   }, [history]);
+<<<<<<< HEAD
 
   React.useEffect(() => {
     checkToken();
   }, [checkToken]);
+=======
+
+
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -80,7 +100,10 @@ function App() {
         .then(([userData, moviesData]) => {
           setCurrentUser(userData.data);
           setMovies(moviesData.data);
+<<<<<<< HEAD
         //  setSavedMovies(savedmoviesData.data);
+=======
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
         })
         .catch((e) => console.log(e));
     }
@@ -142,7 +165,10 @@ function App() {
     setCurrentUser({});
     localStorage.removeItem("jwt");
     localStorage.removeItem("movies");
+<<<<<<< HEAD
     localStorage.removeItem("savedMovies");
+=======
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
     history.push("/");
     setMovies([]);
     setFilteredMovies([]);
@@ -151,6 +177,7 @@ function App() {
     setSavedFilteredMovies([]);
     setSavedFilteredShortMovies([]);
   }
+<<<<<<< HEAD
 
   // запрос с сервера для поиска фильмов
   function handleSearchMovies(text) {
@@ -164,6 +191,21 @@ function App() {
         setIsNotFound(true);
       } else {
         setIsNotFound(false);
+=======
+// запрос с сервера для поиска фильмов
+  function handleSearchMovies(text) {
+    setIsLoading(true);
+    setErrorMessageMovies(false)
+    setIsNotFound(false);
+    if (!movies.length === 0) {
+      const filteredMovies = filterKeyword(movies, text);
+      
+      if (filteredMovies.length === 0) {
+        setIsNotFound(true);
+ 
+      } else {
+        setIsNotFound(false);  
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
       }
       setFilteredMovies(filteredMovies);
     } else {
@@ -173,6 +215,10 @@ function App() {
           setMovies(data);
           localStorage.setItem("movies", JSON.stringify(data));
           const filteredMovies = filterKeyword(data, text);
+<<<<<<< HEAD
+=======
+         // console.log("films ", filteredMovies);
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
           if (filteredMovies.length === 0) {
             setIsNotFound(true);
           } else {
@@ -184,18 +230,34 @@ function App() {
             if (!filteredMoviesShort.length === 0) {
               setIsNotFound(false);
             } else {
+<<<<<<< HEAD
               setFilteredShortMovies(filteredMoviesShort);
             }
+=======
+            //  setIsNotFound(true);
+            //  setFilteredMovies(!filteredMovies)
+            setFilteredShortMovies(filteredMoviesShort);  
+            }
+         
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
           }
         })
         .catch((err) => {
           console.log(err);
+<<<<<<< HEAD
           setErrorMessageMovies(true);
+=======
+          setErrorMessageMovies(true)
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
           setIsNotFound(false);
         });
       setTimeout(() => {
         setIsLoading(false);
+<<<<<<< HEAD
       }, 1000);
+=======
+      }, 900);
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
     }
   }
 
@@ -211,6 +273,16 @@ function App() {
     // console.log(result)
     return result;
   }
+<<<<<<< HEAD
+=======
+
+  //счетчик фильмов по времени
+  function filterShortfilm(films) {
+    return films.filter((movie) => {
+      return movie.duration <= 40;
+    });
+  }
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
 
   //счетчик фильмов по времени
   function filterShortfilm(films) {
@@ -312,8 +384,11 @@ function App() {
             isNotFound={isNotFound}
             shortFilmValue={shortFilmValue}
             setShortFilmValue={setShortFilmValue}
+<<<<<<< HEAD
             savedMoviesAfterLike={savedMoviesAfterLike}
             deleteSavedMovies={deleteSavedMovies}
+=======
+>>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
           />
           <ProtectedRoute
             exact
