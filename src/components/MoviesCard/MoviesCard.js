@@ -2,7 +2,6 @@ import React from "react";
 //import { useLocation } from "react-router-dom";
 
 
-<<<<<<< HEAD
 function MoviesCard({
   movie,
   savedMovies,
@@ -31,16 +30,6 @@ function MoviesCard({
 function handleDeleteMovie(e) {
   deleteSavedMovies(movie._id);
 }
-=======
-function MoviesCard({movie}) {
- 
-  const { pathname } = useLocation();
- //  console.log(movie)
-   
-  function handleClick(e) {
-    e.target.classList.add("movies-card__like_active");
-  }
->>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
   
   const duration = (time) => {
     const hours = Math.floor(time/ 60);
