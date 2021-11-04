@@ -36,7 +36,7 @@ function App() {
   const checkToken = React.useCallback(() => {
     const token = localStorage.getItem("jwt");
     const movies = localStorage.getItem("movies");
-   // const savedMovies = localStorage.getItem("savedMovies");
+    // const savedMovies = localStorage.getItem("savedMovies");
     if (token) {
       setToken(token);
       if (movies) {
@@ -80,21 +80,22 @@ function App() {
         .then(([userData, moviesData]) => {
           setCurrentUser(userData.data);
           setMovies(moviesData.data);
-        //  setSavedMovies(savedmoviesData.data);
+          //  setSavedMovies(savedmoviesData.data);
         })
         .catch((e) => console.log(e));
     }
   }, [loggedIn]);
 
-  function register(data) {
-    return mainApi
-      .register(data)
-      .then((data) => {
-        if (data) {
-          login({ email: data.email, password: data.password });
+  function register(registerData) {
+    mainApi
+      .register(registerData)
+      .then(({ data: responseData }) => {
+        if (responseData) {
+          console.log("responseData", responseData);
+          login({ email: responseData.email, password: registerData.password });
           history.push("/movies");
         } else {
-          Promise.reject(`Ошибка ${data.status}`);
+          Promise.reject(`Ошибка ${responseData.status}`);
         }
       })
       .catch((err) => {
@@ -232,7 +233,7 @@ function App() {
           let moviesArr = [...savedMovies]; //создаем массив , в который добавлем сохраненные фильмы
           moviesArr.push(res); //добавляем фильмы
           setSavedMovies(moviesArr); // массив с фильмами теперь не пустой
-          console.log("savedMovies" , savedMovies)
+          console.log("savedMovies", savedMovies);
         })
         .catch((err) => {
           console.log(err);
@@ -268,29 +269,28 @@ function App() {
     }
   }
 
-
   function deleteSavedMovies(id) {
-    
     if (token) {
-      mainApi.deleteSavedMovie(id, token)
+      mainApi
+        .deleteSavedMovie(id, token)
 
         .then((res) => {
           setIsLoading(true);
-       const moviesArr =  savedMovies.filter((movie) => {
+          const moviesArr = savedMovies.filter((movie) => {
             return movie._id !== id;
-          })
-          setSavedMovies(moviesArr)
-      })
-      .catch((err) => {
-        setErrorMessageMovies(true);
-        setIsNotFound(false);
-      });
+          });
+          setSavedMovies(moviesArr);
+        })
+        .catch((err) => {
+          setErrorMessageMovies(true);
+          setIsNotFound(false);
+        });
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }
   }
-}
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">

@@ -85,10 +85,7 @@ function Profile({
               required
               type="email"
               id="email"
-<<<<<<< HEAD
              
-=======
->>>>>>> 7fc20c32523fa92e4e3ae1280edcc51cde6fae03
               value={values.email || ""}
               onChange={handleChangeInput}
             />
