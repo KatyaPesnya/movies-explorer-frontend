@@ -39,14 +39,15 @@ function MoviesCardList({
       <ul className="movies-card-list">
         {newMovies.length ?
           newMovies.map((movie) => {
-            return <MoviesCard 
+            return (<MoviesCard 
             movie={movie}
-            key={isSaved ? movie.id : movie._id}
+            key={ movie.id }
             savedMovies={savedMovies}
             savedMoviesAfterLike={savedMoviesAfterLike}
             deleteSavedMovies={deleteSavedMovies}
             isSaved={isSaved}
-              />;
+              />
+              );
           }): null }
       </ul>
       {(newMovies.length && (movies.length !== newMovies.length)) ? ( 

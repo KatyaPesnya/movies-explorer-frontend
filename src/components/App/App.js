@@ -30,30 +30,18 @@ function App() {
   const [errorMessageMovies, setErrorMessageMovies] = React.useState(false);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedFilteredMovies, setSavedFilteredMovies] = React.useState([]);
-  const [savedFilteredShortMovies, setSavedFilteredShortMovies] =
-    React.useState([]);
+  const [savedFilteredShortMovies, setSavedFilteredShortMovies] = React.useState([]);
 
-  const checkToken = React.useCallback(() => {
+  React.useEffect(() => {
     const token = localStorage.getItem("jwt");
-    const movies = localStorage.getItem("movies");
-    // const savedMovies = localStorage.getItem("savedMovies");
     if (token) {
       setToken(token);
-      if (movies) {
-        const result = JSON.parse(movies);
-        setMovies(result);
-      }
-      // if (savedMovies) {
-      //   const savedResult = JSON.parse(savedMovies);
-      //  setSavedMovies(savedResult);
-      //   setSavedFilteredMovies(savedResult);
-      // }
-      history.push("/movies");
       mainApi
         .checkToken(token)
         .then((data) => {
           if (data) {
             setLoggedIn(true);
+            history.push("/movies");
           }
         })
         .catch((err) => {
@@ -61,17 +49,27 @@ function App() {
           history.push("/signin");
         });
     }
-  }, [history]);
+  }, [loggedIn]);
 
   React.useEffect(() => {
-    checkToken();
-  }, [checkToken]);
-
-  React.useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
+    const movies = localStorage.getItem("movies");
+    // const savedMovies = localStorage.getItem("savedMovies");
+    if (movies) {
+      const result = JSON.parse(movies);
+      setMovies(result);
     }
-  }, [loggedIn, history]);
+    // if (savedMovies) {
+    //   const savedResult = JSON.parse(savedMovies);
+    //  setSavedMovies(savedResult);
+    //   setSavedFilteredMovies(savedResult);
+    // }
+  }, [loggedIn]);
+
+  // React.useEffect(() => {
+  //   if (loggedIn) {
+  //     history.push("/");
+  //   }
+  // }, [loggedIn, history]);
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -86,14 +84,21 @@ function App() {
     }
   }, [loggedIn]);
 
+  /**
+   * Регистрация пользователя
+   **/
+
   function register(registerData) {
     mainApi
       .register(registerData)
       .then(({ data: responseData }) => {
         if (responseData) {
-          console.log("responseData", responseData);
-          login({ email: responseData.email, password: registerData.password });
-          history.push("/movies");
+          login(
+            {
+               email: responseData.email,
+               password: registerData.password 
+              }
+              );
         } else {
           Promise.reject(`Ошибка ${responseData.status}`);
         }
@@ -103,6 +108,10 @@ function App() {
         setIsSuccess("Что-то пошло не так. Попробуйте еще раз.");
       });
   }
+
+  /**
+   * Авторизация пользователя
+   **/
 
   function login(data) {
     mainApi
