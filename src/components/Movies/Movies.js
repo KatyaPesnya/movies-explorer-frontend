@@ -14,7 +14,7 @@ function Movies({
   setShortFilmValue,
   errorMessageMovies,
   savedMovies,
-  savedMoviesAfterLike,
+  saveMovieAfterLike,
   deleteSavedMovies
 }) {
   return (
@@ -43,7 +43,7 @@ function Movies({
         movies={movies} 
         savedMovies={savedMovies}
         isSaved={false}
-        savedMoviesAfterLike={savedMoviesAfterLike}
+        saveMovieAfterLike={saveMovieAfterLike}
         deleteSavedMovies={deleteSavedMovies}
          />
         <Footer />

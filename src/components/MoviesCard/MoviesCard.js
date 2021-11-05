@@ -1,28 +1,36 @@
-import React from "react";
-//import { useLocation } from "react-router-dom";
-
+import React, {useEffect} from "react";
 
 function MoviesCard({
   movie,
-  savedMovies,
+  savedMovies=[],
   isSaved,
-  savedMoviesAfterLike,
+  saveMovieAfterLike,
   deleteSavedMovies,
 }) {
   const [isLike, setIsLike] = React.useState(false);
 
-  //const { pathname } = useLocation();
+  useEffect(() => {
+    const isLiked = savedMovies.some((mov) => String(movie.id) === mov.movieId);
+
+    setIsLike(isLiked);
+  }, [savedMovies])
+
 
    function handleLikeMovie(e) {
     if (isLike) {
-        const moviesForSearch = 
-        savedMovies.find((movie) => movie.movieId === movie.id);
-      
+      console.log('savedMovies', savedMovies)
+
+   
+      const moviesForSearch = savedMovies.find((i) => {
+        console.log(i.movieId, movie.id, )
+        return i.movieId === movie.id.toString()
+        });
+ 
         deleteSavedMovies(moviesForSearch._id);
-        console.log(moviesForSearch)
+  
     }
     else {
-      savedMoviesAfterLike(movie);
+      saveMovieAfterLike(movie);
     }
     setIsLike(!isLike);
 }
@@ -40,7 +48,7 @@ function handleDeleteMovie(e) {
   return (
     <li className="movies-card">
         <a target="_blank" href={movie.trailerLink} rel="noreferrer">
-                <img className="movies-card__img" alt={movie.nameRU} src={ "https://api.nomoreparties.co" + movie.image.url}/>
+                <img className="movies-card__img" alt={movie.nameRU} src={("https://api.nomoreparties.co" + movie.image.url)}/>
             </a>
 
       <div className="movies-card__container">
@@ -60,15 +68,6 @@ function handleDeleteMovie(e) {
     />
   )
     }
-        {/* {pathname === "/movies" ? (
-          <button 
-          className={isLike ? `movies-card__like_active movies-card__like` : `movies-card__like`}
-           onClick={ handleClick
-            //  ()=> console.log('like')
-            }></button>
-        ) : (
-          <button className="movies-card__delete"/>
-        )} */}
         <p className="movies-card__subtitle">{duration(movie.duration)}</p>
       </div>
     </li>

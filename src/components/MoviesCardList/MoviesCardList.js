@@ -5,11 +5,10 @@ import moviesCount from "../../utils/moviesCount";
 function MoviesCardList({ 
   movies,
   savedMovies,
-  savedMoviesAfterLike,
+  saveMovieAfterLike,
   deleteSavedMovies,
   isSaved,
    }) {
-  // if (!movies || !movies.length) return null;
 
   const [moviesCountStart, setMoviesCountStart] = React.useState(moviesCount());
   const [newMovies, setNewMovies] = React.useState([]);
@@ -43,7 +42,7 @@ function MoviesCardList({
             movie={movie}
             key={ movie.id }
             savedMovies={savedMovies}
-            savedMoviesAfterLike={savedMoviesAfterLike}
+            saveMovieAfterLike={saveMovieAfterLike}
             deleteSavedMovies={deleteSavedMovies}
             isSaved={isSaved}
               />

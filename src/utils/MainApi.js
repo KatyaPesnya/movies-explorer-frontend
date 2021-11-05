@@ -79,13 +79,15 @@ class MainApi {
         duration: movie.duration,
         year: movie.year,
         description: movie.description,
-        image: "https://api.nomoreparties.co/beatfilm-movies" + movie.image.url,
-        trailer: movie.trailerLink,
+        image: 'https://api.nomoreparties.co' + movie.image.url,
+        trailer: movie.trailerLink
+        ? movie.trailerLink.startsWith("https")
+          ? movie.trailerLink
+          : "https://www.youtube.com"
+        : "https://www.youtube.com",
         nameRU: movie.nameRU,
         nameEN: movie.nameEN || "null",
-        thumbnail:
-          "https://api.nomoreparties.co/beatfilm-movies" +
-          movie.image.formats.thumbnail.url,
+        thumbnail:'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url,
         movieId: movie.id,
       }),
     }).then(this._handleOriginalResponse);
@@ -102,6 +104,7 @@ class MainApi {
   }
 
   deleteSavedMovie(id, token) {
+    console.log(id)
     return fetch(`${this._url}/movies/${id}`, {
       method: "DELETE",
       headers: {
