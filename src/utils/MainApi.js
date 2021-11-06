@@ -117,7 +117,7 @@ class MainApi {
 }
 
 const OPTIONS = {
-  baseUrl: "http://localhost:3000",
+  baseUrl: "https://api.nomoreparties.co/beatfilm-movies",
   headers: {
     "Content-Type": "application/json",
   },
