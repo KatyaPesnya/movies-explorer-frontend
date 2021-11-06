@@ -8,3 +8,4 @@
 
 Адрес домена сервера: https://api.movies.pesnya.nomoredomains.monster
 Адрес размещение фронтенда на сервере: https://movies.pesnya.nomoredomains.monster
+ Публичный апи: 51.250.4.52
