@@ -2,11 +2,13 @@ import React from "react";
 import "./Register.css";
 import LogoLink from "../LogoLink/LogoLink";
 import { Link } from "react-router-dom";
-import {useForm} from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm";
 
-
-
-function Register({onRegister, isSuccess,  setIsSuccess}) {
+function Register({
+  onRegister,
+  isSuccess,
+  setIsSuccess }) {
+    
   const { values, handleChange, resetForm, errors, isValid } = useForm();
 
   React.useEffect(() => {
@@ -16,24 +18,27 @@ function Register({onRegister, isSuccess,  setIsSuccess}) {
   function handleChangeInput(e) {
     handleChange(e);
     if (isSuccess.length > 0) {
-        setIsSuccess('');
+      setIsSuccess("");
     }
-};
-  function handleSubmit(e){
+  }
+  function handleSubmit(e) {
     e.preventDefault();
     onRegister(values);
     resetForm();
   }
   function deleteError() {
     resetForm();
-  
-}
+  }
   return (
     <main className="register">
       <LogoLink />
       <h1 className="register__title">Добро пожаловать!</h1>
- 
-      <form className="register__form" disabled={!isValid} onSubmit={handleSubmit} >
+
+      <form
+        className="register__form"
+        disabled={!isValid}
+        onSubmit={handleSubmit}
+      >
         <label className="register__info-input">Имя</label>
         <input
           className="register__input"
@@ -72,12 +77,12 @@ function Register({onRegister, isSuccess,  setIsSuccess}) {
           onChange={handleChangeInput}
         />
         <span className="profile__error">{errors.password || ""} </span>
-         <span className="profile__error">  {isSuccess} </span>
+        <span className="profile__error"> {isSuccess} </span>
         <button className="register__button" type="submit" disabled={!isValid}>
           Зарегистрироваться
         </button>
       </form>
- 
+
       <p className="register__paragraph">
         Уже зарегистрированы?&ensp;
         <Link className="register__link" to="/signin" onClick={deleteError}>

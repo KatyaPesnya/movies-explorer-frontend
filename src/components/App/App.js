@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
@@ -15,34 +15,36 @@ import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
-    /**
+  /**
    * Все фильмы
    */
-  const [movies, setMovies] = React.useState([]);
-  const [filteredMovies, setFilteredMovies] = React.useState([]);
-  const [filteredShortMovies, setFilteredShortMovies] = React.useState([]);
-  const [shortFilmValue, setShortFilmValue] = React.useState(false);
+  const [movies, setMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredShortMovies, setFilteredShortMovies] = useState([]);
+  const [shortFilmValue, setShortFilmValue] = useState(false);
 
   const history = useHistory();
-  const pathname = useLocation();
+
   const [isSuccess, setIsSuccess] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [errorMessageMovies, setErrorMessageMovies] = React.useState(false);
 
-    /**
+  /**
    * Все лайкнутые фильмы
    */
-  const [savedMovies, setSavedMovies] = React.useState([]);
-  const [savedFilteredMovies, setSavedFilteredMovies] = React.useState([]);
-  const [savedFilteredShortMovies, setSavedFilteredShortMovies] = React.useState([]);
-  const [mappedSavedFilteredMovies, setMappedSavedFilteredMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedFilteredMovies, setSavedFilteredMovies] = useState([]);
+  const [savedFilteredShortMovies, setSavedFilteredShortMovies] = useState([]);
+  const [mappedSavedFilteredMovies, setMappedSavedFilteredMovies] = useState(
+    []
+  );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
       setToken(token);
@@ -61,7 +63,7 @@ function App() {
     }
   }, [loggedIn]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const filtered = movies.filter((movie) => {
       const mov = savedFilteredMovies.find((item) => {
         return item.movieId === String(movie.id);
@@ -70,63 +72,67 @@ function App() {
     });
 
     const mapped = filtered.map((item) => {
-      const savedMovie = savedFilteredMovies.find((mov) => { return mov.movieId === String(item.id); })
+      const savedMovie = savedFilteredMovies.find((mov) => {
+        return mov.movieId === String(item.id);
+      });
 
       return {
         ...savedMovie,
         ...item,
-      }
+      };
     });
 
-    setMappedSavedFilteredMovies(mapped)
+    setMappedSavedFilteredMovies(mapped);
+  }, [savedFilteredMovies]);
 
-  }, [savedFilteredMovies])
-
- /**
+  /**
    * Сохранение всех фильмов в стейт из локалстореджа
    */
-  React.useEffect(() => {
+  useEffect(() => {
     const movies = localStorage.getItem("movies");
     if (movies) {
       const result = JSON.parse(movies);
       setMovies(result);
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
-  React.useEffect(() => {
-
+  useEffect(() => {
     if (loggedIn) {
- const token = localStorage.getItem("jwt");
+      const token = localStorage.getItem("jwt");
 
       mainApi
         .getSavedMovies(token) // мы делаем запрос на сервер , нам приходят наши сохраненные фильмы
         .then(({ data }) => {
           setSavedMovies(data);
           setSavedFilteredMovies(data);
+          setSavedFilteredShortMovies(data);
         })
         .catch((err) => console.log(err));
     } else {
       setSavedMovies([]);
     }
   }, [loggedIn]);
-  
-  React.useEffect(() => {
+
+  useEffect(() => {
     setSavedFilteredMovies(savedMovies); //тогда мы добавляем их в массив фильтрованных сохраненных фильмов
   }, [savedMovies]);
 
-  //поиск среди сохраненных фильмов
-  function handleSearchSavedMovies(text) {
-    setErrorMessageMovies(false);
-    setIsNotFound(false);
+  useEffect(() => {
+    if (shortFilmValue) {
+      const filteredMoviesShort = filterShortfilm(savedMovies);
+      if (!filteredMoviesShort.length === 0) {
+        setIsNotFound(false);
+      } else {
+        setSavedFilteredMovies(filteredMoviesShort);
+      }
+    }
+  }, [shortFilmValue]);
 
-    const filteredMovies = filterKeyword(savedMovies, text);
-    setSavedFilteredMovies(filteredMovies); //тогда мы добавляем их в массив фильтрованных сохраненных фильмов
-  }
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       const token = localStorage.getItem("jwt");
-      mainApi.getUserProfile(token)
+      mainApi
+        .getUserProfile(token)
         .then(({ data }) => {
           setCurrentUser(data);
         })
@@ -143,12 +149,10 @@ function App() {
       .register(registerData)
       .then(({ data: responseData }) => {
         if (responseData) {
-          login(
-            {
-               email: responseData.email,
-               password: registerData.password 
-              }
-              );
+          login({
+            email: responseData.email,
+            password: registerData.password,
+          });
         } else {
           Promise.reject(`Ошибка ${responseData.status}`);
         }
@@ -186,7 +190,6 @@ function App() {
         .then((res) => {
           localStorage.setItem("currentUser", JSON.stringify(res.data));
           setCurrentUser(res.data);
-          history.push(pathname.pathname);
           setIsSuccess("Профиль успешно обновлен.");
         })
         .catch((err) => {
@@ -285,7 +288,7 @@ function App() {
       //если токен пришел
       mainApi
         .saveMovie(movie, token) //делаем запрос на сервер
-        .then(({data}) => {
+        .then(({ data }) => {
           let moviesArr = [...savedMovies]; //создаем массив , в который добавлем сохраненные фильмы
           moviesArr.push(data); //добавляем фильмы
           setSavedMovies(moviesArr); // массив с фильмами теперь не пустой
@@ -301,15 +304,11 @@ function App() {
 
   //поиск среди сохраненных фильмов
   function handleSearchSavedMovies(text) {
-    setErrorMessageMovies(false);
-    setIsNotFound(false);
-      const filteredMovies = (filterKeyword(savedMovies, text));
-        //тогда мы добавляем их в массив фильтрованных сохраненных фильмов
-      setSavedFilteredMovies(filteredMovies); 
+    const filteredMovies = filterKeyword(savedMovies, text);
+    setSavedFilteredMovies(filteredMovies);
   }
 
   function deleteSavedMovies(id) {
-    console.log(id)
     if (token) {
       mainApi
         .deleteSavedMovie(id, token)
@@ -367,7 +366,7 @@ function App() {
             errorMessageMovies={errorMessageMovies}
             isLoading={isLoading}
             onSavedMoviesSearch={handleSearchSavedMovies}
-            movies={ mappedSavedFilteredMovies }
+            movies={mappedSavedFilteredMovies}
             savedMovies={savedMovies}
             saveMovieAfterLike={saveMovieAfterLike}
             deleteSavedMovies={deleteSavedMovies}

@@ -2,14 +2,13 @@ import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import moviesCount from "../../utils/moviesCount";
 
-function MoviesCardList({ 
+function MoviesCardList({
   movies,
   savedMovies,
   saveMovieAfterLike,
   deleteSavedMovies,
   isSaved,
-   }) {
-
+}) {
   const [moviesCountStart, setMoviesCountStart] = React.useState(moviesCount());
   const [newMovies, setNewMovies] = React.useState([]);
 
@@ -26,38 +25,41 @@ function MoviesCardList({
   React.useEffect(() => {
     const slicedMovies = movies.slice(0, moviesCountStart.moviesCount);
     setNewMovies(slicedMovies);
-
   }, [movies]);
 
- const addMoviesButton = () => {
-    const slicedMovies = movies.slice(0, newMovies.length + moviesCountStart.newMoviesCount);
-     setNewMovies(slicedMovies)
-  }
+  const addMoviesButton = () => {
+    const slicedMovies = movies.slice(
+      0,
+      newMovies.length + moviesCountStart.newMoviesCount
+    );
+    setNewMovies(slicedMovies);
+  };
   return (
     <>
       <ul className="movies-card-list">
-        {newMovies.length ?
-          newMovies.map((movie) => {
-            return (<MoviesCard 
-            movie={movie}
-            key={ movie.id }
-            savedMovies={savedMovies}
-            saveMovieAfterLike={saveMovieAfterLike}
-            deleteSavedMovies={deleteSavedMovies}
-            isSaved={isSaved}
-              />
+        {newMovies.length
+          ? newMovies.map((movie) => {
+              return (
+                <MoviesCard
+                  movie={movie}
+                  key={movie.id}
+                  savedMovies={savedMovies}
+                  saveMovieAfterLike={saveMovieAfterLike}
+                  deleteSavedMovies={deleteSavedMovies}
+                  isSaved={isSaved}
+                />
               );
-          }): null }
+            })
+          : null}
       </ul>
-      {(newMovies.length && (movies.length !== newMovies.length)) ? ( 
-          <button 
-      className="movies__button-continuation"
-      onClick={addMoviesButton}
-      >    
-        Ещё
-      </button>)
-       : null
-       }
+      {newMovies.length && movies.length !== newMovies.length ? (
+        <button
+          className="movies__button-continuation"
+          onClick={addMoviesButton}
+        >
+          Ещё
+        </button>
+      ) : null}
     </>
   );
 }

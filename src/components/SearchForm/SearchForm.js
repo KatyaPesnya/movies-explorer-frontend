@@ -1,17 +1,16 @@
 import React from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
-import {useFormSerch} from "../../hooks/useForm";
+import { useFormSerch } from "../../hooks/useForm";
 
-function SearchForm({isSaved,
+function SearchForm({
+  isSaved,
   onSearchMovies,
   shortFilmValue,
-  setShortFilmValue, 
-  onSavedMoviesSearch
+  setShortFilmValue,
+  onSavedMoviesSearch,
 }) {
-  
   const { values, handleChange } = useFormSerch();
-  
-  
+
   const handleSubmitMovies = (evt) => {
     evt.preventDefault();
     onSearchMovies(values.search);
@@ -20,12 +19,12 @@ function SearchForm({isSaved,
   function handleSubmitSavedMovies(evt) {
     evt.preventDefault();
     onSavedMoviesSearch(values.search);
-}
+  }
   return (
-    <form className="search-form"
-     onSubmit={ isSaved ?
-      handleSubmitSavedMovies : 
-      handleSubmitMovies }>
+    <form
+      className="search-form"
+      onSubmit={isSaved ? handleSubmitSavedMovies : handleSubmitMovies}
+    >
       <div>
         <input
           className="search-form__input"
@@ -40,9 +39,9 @@ function SearchForm({isSaved,
         </button>
       </div>
       <FilterCheckbox
-       shortFilmValue={shortFilmValue}
-       setShortFilmValue={setShortFilmValue}
-       />
+        shortFilmValue={shortFilmValue}
+        setShortFilmValue={setShortFilmValue}
+      />
     </form>
   );
 }
