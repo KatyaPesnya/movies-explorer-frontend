@@ -117,7 +117,7 @@ class MainApi {
 }
 
 const OPTIONS = {
-  baseUrl: "https://api.nomoreparties.co/beatfilm-movies",
+  baseUrl: "https://api.movies.pesnya.nomoredomains.monster",
   headers: {
     "Content-Type": "application/json",
   },
