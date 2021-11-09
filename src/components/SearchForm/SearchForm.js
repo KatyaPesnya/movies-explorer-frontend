@@ -13,11 +13,25 @@ function SearchForm({
 
   const handleSubmitMovies = (evt) => {
     evt.preventDefault();
+    if(!evt.target.elements.search.valeue){
+      evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
+    } else {
+      evt.target.elements.search.setCustomValidity('');
+  
+    }
     onSearchMovies(values.search);
+
   };
 
   function handleSubmitSavedMovies(evt) {
     evt.preventDefault();
+    if(!evt.target.elements.search.valeue){
+      evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
+ 
+    } else {
+      evt.target.elements.search.setCustomValidity('');
+    
+    }
     onSavedMoviesSearch(values.search);
   }
   return (
@@ -31,8 +45,11 @@ function SearchForm({
           type="text"
           name="search"
           placeholder="Фильм"
-          required
-          onChange={handleChange}
+          onChange={(evt) => {
+          
+            handleChange(evt);
+            evt.target.setCustomValidity('')
+          }}
         />
         <button className="search-form__button" type="submit">
           Найти
@@ -42,6 +59,7 @@ function SearchForm({
         shortFilmValue={shortFilmValue}
         setShortFilmValue={setShortFilmValue}
       />
+    
     </form>
   );
 }

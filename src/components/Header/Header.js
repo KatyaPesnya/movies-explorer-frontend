@@ -4,8 +4,6 @@ import { NavLink } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
 function Header({ lending, loggedIn }) {
-  console.log("loggedIn",loggedIn)
-  console.log('lending', lending)
   return (
     <header className="header">
       <LogoLink />
