@@ -53,7 +53,7 @@ function App() {
         .then((data) => {
           if (data) {
             setLoggedIn(true);
-            history.push("/movies");
+         
           }
         })
         .catch((err) => {
