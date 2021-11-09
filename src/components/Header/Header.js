@@ -4,22 +4,20 @@ import { NavLink } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
 function Header({ lending, loggedIn }) {
+  console.log("loggedIn",loggedIn)
+  console.log('lending', lending)
   return (
     <header className="header">
       <LogoLink />
-      {!loggedIn && lending ? (
+      { !loggedIn && lending
+      ? (
         <>
-          <NavLink className="header__button" to="/signup">
-            Регистрация
-          </NavLink>
-          <NavLink className="header__button" to="/signin">
-            {" "}
-            Войти
-          </NavLink>
+          <NavLink className="header__button" to="/signup"> Регистрация </NavLink>
+          <NavLink className="header__button" to="/signin"> Войти </NavLink>
         </>
-      ) : (
-        <Navigation />
-      )}
+      ) : <Navigation /> }
+
+      
     </header>
   );
 }

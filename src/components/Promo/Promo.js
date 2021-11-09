@@ -2,10 +2,10 @@ import React from "react";
 import promo__logo from "../../images/header__logo.svg";
 import NavTab from "../NavTab/NavTab";
 import Header from "../Header/Header";
-function Promo({ lending }) {
+function Promo({ loggedIn }) {
   return (
     <section className="promo">
-      <Header lending />
+      <Header lending loggedIn = { loggedIn }/>
       <div className="promo__container">
         <img
           className="promo__logo"

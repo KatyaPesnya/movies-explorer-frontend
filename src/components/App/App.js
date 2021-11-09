@@ -335,7 +335,9 @@ function App() {
       <div className="app">
         <Switch>
           <Route exact path="/">
-            <Main />
+            <Main 
+             loggedIn={loggedIn}
+             />
           </Route>
           <ProtectedRoute
             exact
