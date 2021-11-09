@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
@@ -28,7 +28,7 @@ function App() {
   const [shortFilmValue, setShortFilmValue] = useState(false);
 
   const history = useHistory();
-
+  const location = useLocation();
   const [isSuccess, setIsSuccess] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
@@ -60,30 +60,12 @@ function App() {
           console.log(err);
           history.push("/signin");
         });
+        history.push(location.pathname);
     }
+    history.push(location.pathname);
   }, [loggedIn]);
 
-  useEffect(() => {
-    const filtered = movies.filter((movie) => {
-      const mov = savedFilteredMovies.find((item) => {
-        return item.movieId === String(movie.id);
-      });
-      return !!mov;
-    });
-
-    const mapped = filtered.map((item) => {
-      const savedMovie = savedFilteredMovies.find((mov) => {
-        return mov.movieId === String(item.id);
-      });
-
-      return {
-        ...savedMovie,
-        ...item,
-      };
-    });
-
-    setMappedSavedFilteredMovies(mapped);
-  }, [savedFilteredMovies]);
+ 
 
   /**
    * Сохранение всех фильмов в стейт из локалстореджа
@@ -114,6 +96,40 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem("jwt");
+      mainApi
+        .getUserProfile(token)
+        .then(({ data }) => {
+          setCurrentUser(data);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    const filtered = movies.filter((movie) => {
+      const mov = savedFilteredMovies.find((item) => {
+        return item.movieId === String(movie.id);
+      });
+      return !!mov;
+    });
+
+    const mapped = filtered.map((item) => {
+      const savedMovie = savedFilteredMovies.find((mov) => {
+        return mov.movieId === String(item.id);
+      });
+
+      return {
+        ...savedMovie,
+        ...item,
+      };
+    });
+
+    setMappedSavedFilteredMovies(mapped);
+  }, [savedFilteredMovies]);
+
+  useEffect(() => {
     setSavedFilteredMovies(savedMovies); //тогда мы добавляем их в массив фильтрованных сохраненных фильмов
   }, [savedMovies]);
 
@@ -127,18 +143,6 @@ function App() {
       }
     }
   }, [shortFilmValue]);
-
-  useEffect(() => {
-    if (loggedIn) {
-      const token = localStorage.getItem("jwt");
-      mainApi
-        .getUserProfile(token)
-        .then(({ data }) => {
-          setCurrentUser(data);
-        })
-        .catch((e) => console.log(e));
-    }
-  }, [loggedIn]);
 
   /**
    * Регистрация пользователя
