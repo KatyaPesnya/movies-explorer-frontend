@@ -42,7 +42,7 @@ function MoviesCardList({
               return (
                 <MoviesCard
                   movie={movie}
-                  key={movie.id}
+                  key={movie.id || movie._id}
                   savedMovies={savedMovies}
                   saveMovieAfterLike={saveMovieAfterLike}
                   deleteSavedMovies={deleteSavedMovies}

@@ -25,6 +25,9 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [filteredShortMovies, setFilteredShortMovies] = useState([]);
+   /**
+   * Чекбокс короткометражки
+   */
   const [shortFilmValue, setShortFilmValue] = useState(false);
 
   const history = useHistory();
@@ -40,9 +43,7 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [savedFilteredMovies, setSavedFilteredMovies] = useState([]);
   const [savedFilteredShortMovies, setSavedFilteredShortMovies] = useState([]);
-  const [mappedSavedFilteredMovies, setMappedSavedFilteredMovies] = useState(
-    []
-  );
+  const [mappedSavedFilteredMovies, setMappedSavedFilteredMovies] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -53,7 +54,6 @@ function App() {
         .then((data) => {
           if (data) {
             setLoggedIn(true);
-         
           }
         })
         .catch((err) => {
@@ -64,8 +64,6 @@ function App() {
     }
     history.push(location.pathname);
   }, [loggedIn]);
-
- 
 
   /**
    * Сохранение всех фильмов в стейт из локалстореджа
@@ -92,6 +90,8 @@ function App() {
         .catch((err) => console.log(err));
     } else {
       setSavedMovies([]);
+      setSavedFilteredMovies([]);
+      setSavedFilteredShortMovies([]);
     }
   }, [loggedIn]);
 
@@ -108,41 +108,30 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    const filtered = movies.filter((movie) => {
-      const mov = savedFilteredMovies.find((item) => {
-        return item.movieId === String(movie.id);
-      });
-      return !!mov;
-    });
-
-    const mapped = filtered.map((item) => {
-      const savedMovie = savedFilteredMovies.find((mov) => {
-        return mov.movieId === String(item.id);
-      });
-
+    const mapped = savedFilteredMovies.map((item) => {
       return {
-        ...savedMovie,
-        ...item,
-      };
-    });
-
+      country: item.country,
+      description:  item.description,
+      director: item.director,
+      duration: item.duration,
+      image: {
+        url: item.image,
+      },
+      nameEN: item.nameEN,
+      nameRU: item.nameRU,
+      trailerLink: item.trailer,
+      year: item.year,
+      _id: item._id
+    }
+  })
     setMappedSavedFilteredMovies(mapped);
-  }, [savedFilteredMovies]);
+  }, [savedFilteredMovies, movies]);
 
   useEffect(() => {
     setSavedFilteredMovies(savedMovies); //тогда мы добавляем их в массив фильтрованных сохраненных фильмов
   }, [savedMovies]);
 
-  useEffect(() => {
-    if (shortFilmValue) {
-      const filteredMoviesShort = filterShortfilm(savedMovies);
-      if (!filteredMoviesShort.length === 0) {
-        setIsNotFound(false);
-      } else {
-        setSavedFilteredMovies(filteredMoviesShort);
-      }
-    }
-  }, [shortFilmValue]);
+
 
   /**
    * Регистрация пользователя
@@ -219,55 +208,67 @@ function App() {
     setSavedFilteredShortMovies([]);
   }
 
-  // запрос с сервера для поиска фильмов
+  // запрос к серверу для поиска фильмов
   function handleSearchMovies(text) {
-    setIsLoading(true);
     setErrorMessageMovies(false);
     setIsNotFound(false);
-    if (!movies.length === 0) {
-      const filteredMovies = filterKeyword(movies, text);
+    /**
+     * Фильтруем фильмы и сохраняем в стейтах
+     */
+     function filterMovies(data, text = '') {
+      const filteredMovies = filterKeyword(data, text);
 
       if (filteredMovies.length === 0) {
         setIsNotFound(true);
       } else {
         setIsNotFound(false);
+        
       }
       setFilteredMovies(filteredMovies);
-    } else {
+
+      if (shortFilmValue) {
+        const filteredMoviesShort = filterShortfilm(filteredMovies);
+
+        if (filteredMoviesShort.length !== 0) {
+          setIsNotFound(false);
+          setFilteredShortMovies(filteredMoviesShort);
+        } else {
+          setFilteredShortMovies(filteredMoviesShort);
+        }
+      } else {
+        setFilteredShortMovies([]);
+      }
+    }
+
+    const isMoviesLocalStorageNotExists = !localStorage.getItem("movies");
+    const isMoviesNotExistsInMemory = (!movies || movies.length === 0);
+    const isNeedFetchMovies = isMoviesLocalStorageNotExists && isMoviesNotExistsInMemory;
+
+    if (isNeedFetchMovies) {
+      setIsLoading(true);
+
       moviesApi
         .getMovies()
         .then(({ data }) => {
+          setIsLoading(false);
           setMovies(data);
           localStorage.setItem("movies", JSON.stringify(data));
-          const filteredMovies = filterKeyword(data, text);
-          if (filteredMovies.length === 0) {
-            setIsNotFound(true);
-          } else {
-            setIsNotFound(false);
-          }
-          setFilteredMovies(filteredMovies);
-          if (shortFilmValue) {
-            const filteredMoviesShort = filterShortfilm(filteredMovies);
-            if (!filteredMoviesShort.length === 0) {
-              setIsNotFound(false);
-            } else {
-              setFilteredShortMovies(filteredMoviesShort);
-            }
-          }
+          filterMovies(data, text);
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false);
           setErrorMessageMovies(true);
           setIsNotFound(false);
         });
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      } else {
+        filterMovies(movies, text);
+      }
     }
-  }
+  
 
   //счетчик по ключевым словам
-  function filterKeyword(films, text) {
+  function filterKeyword(films, text = '') {
     let result = [];
     films.forEach((movie) => {
       if (movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
@@ -309,7 +310,23 @@ function App() {
   //поиск среди сохраненных фильмов
   function handleSearchSavedMovies(text) {
     const filteredMovies = filterKeyword(savedMovies, text);
-    setSavedFilteredMovies(filteredMovies);
+    if (shortFilmValue) {
+      const filteredMoviesShort = filterShortfilm(filteredMovies);
+      if (filteredMoviesShort.length === 0) {
+        setIsNotFound(true);
+        setSavedFilteredMovies(filteredMoviesShort);
+      } else {
+        setIsNotFound(false);
+        setSavedFilteredMovies(filteredMoviesShort);
+      }
+    } else {
+      if (filteredMovies.length === 0) {
+        setIsNotFound(true);
+      } else {
+        setIsNotFound(false);
+      }
+      setSavedFilteredMovies(filteredMovies);
+    }
   }
 
   function deleteSavedMovies(id) {
@@ -340,7 +357,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Main 
-             loggedIn={loggedIn}
+              loggedIn={loggedIn}
              />
           </Route>
           <ProtectedRoute
@@ -355,6 +372,7 @@ function App() {
             isLoading={isLoading}
             onSearchMovies={handleSearchMovies}
             isNotFound={isNotFound}
+            setIsNotFound={ setIsNotFound }
             shortFilmValue={shortFilmValue}
             setShortFilmValue={setShortFilmValue}
             saveMovieAfterLike={saveMovieAfterLike}
@@ -367,6 +385,7 @@ function App() {
             loggedIn={loggedIn}
             component={SavedMovies}
             isNotFound={isNotFound}
+            setIsNotFound={ setIsNotFound }
             shortFilmValue={shortFilmValue}
             setShortFilmValue={setShortFilmValue}
             errorMessageMovies={errorMessageMovies}
@@ -376,6 +395,7 @@ function App() {
             savedMovies={savedMovies}
             saveMovieAfterLike={saveMovieAfterLike}
             deleteSavedMovies={deleteSavedMovies}
+            setSavedFilteredMovies={ setSavedFilteredMovies }
           />
           <ProtectedRoute
             exact

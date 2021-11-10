@@ -46,7 +46,7 @@ function MoviesCard({
         <img
           className="movies-card__img"
           alt={movie.nameRU}
-          src={"https://api.nomoreparties.co" + movie.image.url}
+          src={ movie.image.url.includes('http') ? movie.image.url : ("https://api.nomoreparties.co" + movie.image.url) }
         />
       </a>
 

@@ -17,23 +17,20 @@ function SearchForm({
       evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
     } else {
       evt.target.elements.search.setCustomValidity('');
-  
     }
     onSearchMovies(values.search);
-
   };
 
   function handleSubmitSavedMovies(evt) {
     evt.preventDefault();
     if(!evt.target.elements.search.valeue){
       evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
- 
     } else {
       evt.target.elements.search.setCustomValidity('');
-    
     }
     onSavedMoviesSearch(values.search);
   }
+
   return (
     <form
       className="search-form"
@@ -48,8 +45,9 @@ function SearchForm({
           onChange={(evt) => {
           
             handleChange(evt);
-            evt.target.setCustomValidity('')
+            evt.target.setCustomValidity('');
           }}
+   
         />
         <button className="search-form__button" type="submit">
           Найти

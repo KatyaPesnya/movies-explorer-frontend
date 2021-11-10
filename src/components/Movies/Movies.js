@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import SearchForm from "../../components/SearchForm/SearchForm";
 import Preloader from "../../components/Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
@@ -9,28 +9,31 @@ function Movies({
   movies,
   isLoading,
   isNotFound,
+  setIsNotFound,
   onSearchMovies,
   shortFilmValue,
   setShortFilmValue,
   errorMessageMovies,
   savedMovies,
   saveMovieAfterLike,
-  deleteSavedMovies
+  deleteSavedMovies,
 }) {
+  useEffect(() => {
+    setIsNotFound(false)
+  }, []);
+
   return (
     <main className="movies">
       <Header />
       <SearchForm
-        onSearchMovies={onSearchMovies}
-        shortFilmValue={shortFilmValue}
-        setShortFilmValue={setShortFilmValue}
-        isSaved={false}
+        onSearchMovies= { onSearchMovies }
+        shortFilmValue= { shortFilmValue }
+        setShortFilmValue= { setShortFilmValue }
+        isSaved= { false }
       />
       {isLoading && <Preloader />}
 
-      {isNotFound && 
-      <p className="profile__error">
-         Ничего не найдено</p>}
+      {isNotFound && <p className="profile__error">Ничего не найдено</p>}
 
       {errorMessageMovies && (
         <p className="profile__error">
@@ -39,13 +42,13 @@ function Movies({
         </p>
       )}
       <>
-        <MoviesCardList 
-        movies={movies} 
-        savedMovies={savedMovies}
-        isSaved={false}
-        saveMovieAfterLike={saveMovieAfterLike}
-        deleteSavedMovies={deleteSavedMovies}
-         />
+        <MoviesCardList
+          movies= { movies }
+          savedMovies= { savedMovies }
+          isSaved= { false }
+          saveMovieAfterLike= { saveMovieAfterLike }
+          deleteSavedMovies= { deleteSavedMovies }
+        />
         <Footer />
       </>
     </main>

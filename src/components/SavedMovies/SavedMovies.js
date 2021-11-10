@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SearchForm from "../../components/SearchForm/SearchForm";
 import Preloader from "../../components/Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
@@ -10,6 +10,7 @@ function SavedMovies({
   savedMovies,
   isLoading,
   isNotFound,
+  setIsNotFound,
   onSearchMovies,
   shortFilmValue,
   setShortFilmValue,
@@ -17,7 +18,13 @@ function SavedMovies({
   onSavedMoviesSearch,
   saveMovieAfterLike,
   deleteSavedMovies,
+  setSavedFilteredMovies,
 }) {
+  useEffect(() => {
+    setIsNotFound(false);
+    setSavedFilteredMovies(savedMovies);
+  }, [])
+
   return (
     <main className="movies">
       <div className="movies__container">
