@@ -28,10 +28,12 @@
   color: #ff6838;
   text-decoration: none;
   cursor: pointer;
+  border: none;
+  background-color: inherit;
 }
 @media (min-width: 768px) {
   .not-found {
-    padding-top: 53%;
+    padding-top: 39%;
   }
   .not-found__title {
     font-size: 140px;

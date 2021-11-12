@@ -117,8 +117,8 @@ class MainApi {
 }
 
 const OPTIONS = {
-  //baseUrl:'http://localhost:3000',
-  baseUrl: "https://api.movies.pesnya.nomoredomains.monster",
+  baseUrl:'http://localhost:3000',
+ // baseUrl: "https://api.movies.pesnya.nomoredomains.monster",
   headers: {
     "Content-Type": "application/json",
   },

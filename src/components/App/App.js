@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation, Redirect } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
@@ -408,18 +408,31 @@ function App() {
             setIsSuccess={setIsSuccess}
           />
           <Route exact path="/signin">
-            <Login
-              onLogin={login}
-              setIsSuccess={setIsSuccess}
-              isSuccess={isSuccess}
-            />
+    
+            { !loggedIn ? (
+             
+               <Login
+               onLogin={login}
+               setIsSuccess={setIsSuccess}
+               isSuccess={isSuccess}
+               
+               />
+            ) : (
+        
+              <Redirect to="/movies" /> 
+            )}
+           
           </Route>
           <Route exact path="/signup">
+          { !loggedIn ? (
             <Register
               isSuccess={isSuccess}
               setIsSuccess={setIsSuccess}
               onRegister={register}
             />
+               ) : (
+              <Redirect to="/movies" /> 
+            )}
           </Route>
           <Route path="*">
             <NotFound />
