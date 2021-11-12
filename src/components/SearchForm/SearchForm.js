@@ -13,7 +13,7 @@ function SearchForm({
 
   const handleSubmitMovies = (evt) => {
     evt.preventDefault();
-    if(!evt.target.elements.search.valeue){
+    if(!evt.target.elements.search.value){
       evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
     } else {
       evt.target.elements.search.setCustomValidity('');
@@ -23,7 +23,7 @@ function SearchForm({
 
   function handleSubmitSavedMovies(evt) {
     evt.preventDefault();
-    if(!evt.target.elements.search.valeue){
+    if(!evt.target.elements.search.value){
       evt.target.elements.search.setCustomValidity('Нужно ввести ключевое слово');
     } else {
       evt.target.elements.search.setCustomValidity('');

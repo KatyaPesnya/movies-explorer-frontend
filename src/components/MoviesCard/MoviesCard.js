@@ -14,15 +14,12 @@ function MoviesCard({
     setIsLike(isLiked);
   }, [savedMovies]);
 
-  function handleLikeMovie(e) {
+  function handleLikeMovie(evt) {
+    evt.preventDefault()
     if (isLike) {
-      console.log("savedMovies", savedMovies);
-
       const moviesForSearch = savedMovies.find((i) => {
-        console.log(i.movieId, movie.id);
         return i.movieId === movie.id.toString();
       });
-
       deleteSavedMovies(moviesForSearch._id);
     } else {
       saveMovieAfterLike(movie);
@@ -30,7 +27,8 @@ function MoviesCard({
     setIsLike(!isLike);
   }
 
-  function handleDeleteMovie(e) {
+  function handleDeleteMovie(evt) {
+    evt.preventDefault()
     deleteSavedMovies(movie._id);
   }
 
