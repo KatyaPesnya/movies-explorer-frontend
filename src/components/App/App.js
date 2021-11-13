@@ -19,6 +19,7 @@ import Alert from "../Alert/Alert";
 
 import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
+import  { SHORT_MOVIES }  from "../../config/constants.js";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("jwt"));
@@ -301,7 +302,7 @@ function App() {
   //счетчик фильмов по времени
   function filterShortfilm(films) {
     return films.filter((movie) => {
-      return movie.duration <= 40;
+      return movie.duration <= SHORT_MOVIES;
     });
   }
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { MINUTES } from "../../config/constants";
 
 function MoviesCard({
   movie,
@@ -33,8 +34,8 @@ function MoviesCard({
   }
 
   const duration = (time) => {
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time % 60);
+    const hours = Math.floor(time / MINUTES);
+    const minutes = Math.floor(time % MINUTES);
     return `${hours}ч ${minutes}м`;
   };
 
