@@ -1,0 +1,30 @@
+.alert {
+    font-family: "Inter", Arial, sans-serif;
+    width: 260px;
+    height: 50px;
+    padding: 20px;
+    border-radius: 3px;
+    background-color: #ff6738ab;
+    color: #fff;
+    display: flex;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    animation: show 0.5s linear;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+  
+  @keyframes show {
+    0% {
+      right: -200px;
+    }
+    80% {
+      right: 0px;
+    }
+    100% {
+      right: 20px;
+    }
+  }
